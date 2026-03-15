@@ -6,7 +6,10 @@
       "Bash(grep -oP '\\(#[0-9a-fA-F]{3,8}|rgb[^\\)]+\\\\\\)|hsl[^\\)]+\\\\\\)|font-family:[^;]+|--[a-z][^:]+:[^;}]+\\)')",
       "Bash(curl -s \"https://www.emergingtechminor.nl/assets/index-BjeKazEQ.js\")",
       "Bash(grep -o 'background[^,;{]*')",
-      "Bash(grep -oE 'className=\"\"\"\"[^\"\"\"\"]{0,200}\"\"\"\"')"
+      "Bash(grep -oE 'className=\"\"\"\"[^\"\"\"\"]{0,200}\"\"\"\"')",
+      "Read(//c/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/**)",
+      "Read(//c/Users/Shant.Bayramian/**)",
+      "Bash(grep -l \"emerging\\\\|emergingtechminor\\\\|hf_2026\\\\|kling_2026\" \"C:/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/3D Website Asset Generator-20260315T124902Z-1-001/\"*.html)"
     ]
   }
 }

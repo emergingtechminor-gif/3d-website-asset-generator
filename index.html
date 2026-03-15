@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emerging Technologies — Minor & Lab · Inholland</title>
+  <title>Emerging Tech Minor + Lab · Inholland University Amsterdam</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -627,12 +627,504 @@
     .d3 { transition-delay: 0.30s; }
     .d4 { transition-delay: 0.40s; }
 
+    /* ── NAVBAR SOCIAL ICONS ────────────────────────────────── */
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-socials { display: flex; align-items: center; gap: 8px; }
+    .nav-social-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); background: transparent;
+      text-decoration: none; font-size: 14px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-social-icon:hover { color: var(--foreground); background: var(--muted-bg); }
+    #navbar.scrolled .nav-social-icon:hover { background: rgba(0,0,0,0.06); }
+
+    /* ── HERO SUBTITLE & CHIPS ──────────────────────────────── */
+    .hero-subtitle {
+      font-size: clamp(13px, 1.5vw, 16px);
+      color: rgba(255,255,255,0.65);
+      max-width: 460px; line-height: 1.65;
+      margin-top: 20px;
+    }
+    .hero-chips {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px; margin-top: 24px;
+    }
+    .hero-chip {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 6px 14px; border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ── "IN THIS MINOR" SECTION ───────────────────────────── */
+    #program {
+      padding: 120px 0;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+    }
+    .program-header { margin-bottom: 64px; }
+    .program-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .program-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.3);
+      padding: 28px 22px 24px;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+    }
+    .program-item:hover {
+      box-shadow: 0 6px 28px rgba(0,0,0,0.08);
+      transform: translateY(-4px);
+    }
+    .program-item:hover:nth-child(1) { border-color: rgba(63,142,249,0.4); }
+    .program-item:hover:nth-child(2) { border-color: rgba(161,255,178,0.5); }
+    .program-item:hover:nth-child(3) { border-color: rgba(180,167,244,0.4); }
+    .program-item:hover:nth-child(4) { border-color: rgba(249,165,63,0.4); }
+    .program-item:hover:nth-child(5) { border-color: rgba(63,142,249,0.4); }
+    .program-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+    .program-item h4 {
+      font-size: 15px; font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .program-item p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .program-num {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .program-item:nth-child(1) .program-num { color: var(--primary); }
+    .program-item:nth-child(2) .program-num { color: #1d8a38; }
+    .program-item:nth-child(3) .program-num { color: #6b5dcd; }
+    .program-item:nth-child(4) .program-num { color: #c25a0a; }
+    .program-item:nth-child(5) .program-num { color: var(--primary); }
+
+    /* ── LEARNING ACTIVITIES ────────────────────────────────── */
+    #activities {
+      padding: 120px 0;
+      background: var(--foreground);
+    }
+    #activities .section-label { color: var(--secondary); }
+    #activities .section-title { color: #fff; }
+    .activities-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-top: 60px;
+    }
+    .activity-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: calc(var(--radius) * 1.3);
+      padding: 32px 24px;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .activity-card:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.22);
+    }
+    .activity-icon { font-size: 32px; margin-bottom: 18px; display: block; }
+    .activity-card h4 {
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.02em; color: #fff;
+      margin-bottom: 10px;
+    }
+    .activity-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+    /* ── TESTIMONIALS ───────────────────────────────────────── */
+    #testimonials {
+      padding: 120px 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .testimonials-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 60px;
+    }
+    .testimonial-card {
+      background: var(--background); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.5);
+      padding: 36px 32px 28px;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute; top: 18px; left: 28px;
+      font-size: 56px; line-height: 1;
+      color: var(--primary); font-weight: 900; opacity: 0.35;
+    }
+    .testimonial-card blockquote {
+      font-size: 16px; font-style: italic;
+      color: #444; line-height: 1.75;
+      padding-top: 24px; margin-bottom: 24px;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .author-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--primary-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; color: var(--primary);
+    }
+    .author-info strong { font-size: 14px; font-weight: 700; display: block; }
+    .author-info span { font-size: 12px; color: var(--muted); }
+
+    /* ── APPLY SECTION ──────────────────────────────────────── */
+    #apply {
+      padding: 120px 0;
+      background: var(--background);
+    }
+    #apply .section-label { color: var(--primary); }
+    .apply-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .apply-left p {
+      font-size: 17px; line-height: 1.75;
+      color: #444; margin-bottom: 18px;
+    }
+    .eligibility-list {
+      list-style: none; margin-top: 8px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .eligibility-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; color: #444; line-height: 1.5;
+    }
+    .eligibility-list li::before {
+      content: '✓';
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--secondary-soft);
+      color: #1d8a38; font-weight: 800; font-size: 11px;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .apply-cta-wrap { margin-top: 32px; }
+    .apply-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 700;
+      color: #fff; background: var(--primary);
+      padding: 14px 32px; border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(63,142,249,0.4);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .apply-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+    .apply-right { display: flex; flex-direction: column; gap: 16px; }
+    .why-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.2);
+      padding: 22px 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .why-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px rgba(63,142,249,0.1);
+    }
+    .why-card-icon { font-size: 22px; margin-bottom: 10px; }
+    .why-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .why-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .dates-box {
+      background: var(--foreground); border-radius: calc(var(--radius) * 1.2);
+      padding: 28px 24px;
+    }
+    .dates-box h4 {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--secondary); margin-bottom: 20px;
+    }
+    .date-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .date-row:last-child { border-bottom: none; }
+    .date-label { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .date-val { font-size: 14px; font-weight: 700; color: #fff; }
+
+    /* ── LAB ACTIVITIES PLACEHOLDER ─────────────────────────── */
+    .lab-activities-placeholder {
+      margin-top: 28px;
+      border: 2px dashed rgba(63,142,249,0.35);
+      border-radius: calc(var(--radius) * 1.5);
+      padding: 32px 28px;
+      background: rgba(63,142,249,0.04);
+      text-align: center;
+    }
+    .lab-activities-placeholder p {
+      font-size: 14px; color: var(--muted); line-height: 1.65;
+    }
+    .lab-activities-placeholder .placeholder-label {
+      display: inline-block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--primary); background: var(--primary-soft);
+      padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;
+    }
+
+    /* ── ET LOGO MARK ───────────────────────────────────────── */
+    .nav-logo-mark { padding: 0; overflow: hidden; background: transparent !important; }
+
+    /* ── HERO MINOR LABEL ───────────────────────────────────── */
+    .hero-minor-label {
+      font-size: clamp(20px, 3.5vw, 36px);
+      font-weight: 900; letter-spacing: -0.03em;
+      color: rgba(255,255,255,0.55);
+      margin-top: 6px; line-height: 1;
+    }
+
+    /* ── ABOUT SINGLE-COLUMN ────────────────────────────────── */
+    .about-single { max-width: 100%; }
+    .about-single > p { margin-bottom: 20px; }
+    .about-quotes {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 32px;
+    }
+    .about-quote-card {
+      background: var(--background); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px 22px;
+      position: relative;
+    }
+    .about-quote-card::before {
+      content: '"'; position: absolute; top: 12px; left: 18px;
+      font-size: 40px; line-height: 1; color: var(--primary);
+      font-weight: 900; opacity: 0.25;
+    }
+    .about-quote-card blockquote {
+      font-size: 14px; font-style: italic; color: #555;
+      line-height: 1.7; padding-top: 16px; margin-bottom: 14px;
+    }
+    .about-quote-card .aq-author { font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── IN THIS MINOR LIST ─────────────────────────────────── */
+    #minor-will {
+      padding: 120px 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
+    #minor-will .section-title { text-align: center; margin-bottom: 64px; }
+    #minor-will .section-label { text-align: center; display: block; }
+    .minor-will-list {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .minor-will-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 24px 0; border-bottom: 1px solid var(--border);
+    }
+    .minor-will-item:last-child { border-bottom: none; }
+    .mw-icon {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .mw-icon.blue   { background: var(--primary-soft); }
+    .mw-icon.green  { background: var(--secondary-soft); }
+    .mw-icon.purple { background: var(--accent-soft); }
+    .mw-icon.orange { background: rgba(249,165,63,0.12); }
+    .minor-will-item h4 {
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .minor-will-item p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── YOUTUBE VIDEO SECTION ──────────────────────────────── */
+    #video-section {
+      padding: 120px 0;
+      background: var(--foreground);
+    }
+    #video-section .section-label { color: var(--secondary); }
+    #video-section .section-title { color: #fff; }
+    .yt-thumb-wrap {
+      display: block; margin-top: 48px; position: relative;
+      padding-bottom: 56.25%;
+      border-radius: calc(var(--radius) * 2); overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      text-decoration: none;
+    }
+    .yt-thumb-wrap img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .yt-thumb-wrap:hover img { transform: scale(1.03); }
+    .yt-play-btn {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(255,0,0,0.9);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .yt-thumb-wrap:hover .yt-play-btn { transform: translate(-50%,-50%) scale(1.1); background: #ff0000; }
+    .yt-watch-label {
+      position: absolute; bottom: 20px; right: 24px;
+      font-size: 13px; font-weight: 700; color: #fff;
+      background: rgba(0,0,0,0.55); padding: 6px 14px;
+      border-radius: 999px; backdrop-filter: blur(8px);
+    }
+
+    /* ── TEAM SECTION ───────────────────────────────────────── */
+    #team {
+      padding: 120px 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 60px;
+    }
+    .team-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.3);
+      padding: 32px 24px; text-align: center;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .team-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.08); transform: translateY(-4px); }
+    .team-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: #fff;
+      margin: 0 auto 18px; letter-spacing: -0.02em;
+    }
+    .team-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .team-role { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; display: block; }
+    .team-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* ── PARTNERS SECTION ───────────────────────────────────── */
+    #partners {
+      padding: 80px 0;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+    }
+    .partners-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .partner-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; text-align: center;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      text-decoration: none; color: inherit;
+    }
+    .partner-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(63,142,249,0.1); transform: translateY(-2px); }
+    .partner-logo {
+      height: 52px; display: flex; align-items: center; justify-content: center;
+    }
+    .partner-logo img { max-height: 44px; max-width: 140px; object-fit: contain; filter: grayscale(0.2); }
+    .partner-logo-text {
+      font-size: 13px; font-weight: 800; letter-spacing: -0.02em;
+      color: var(--foreground); text-align: center; line-height: 1.2;
+    }
+    .partner-card p { font-size: 11px; color: var(--muted); line-height: 1.5; max-width: 160px; }
+
+    /* ── NEWSLETTER BAR ─────────────────────────────────────── */
+    .newsletter-bar {
+      background: var(--foreground);
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .newsletter-bar-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .newsletter-bar-text h3 {
+      font-size: 17px; font-weight: 800; color: #fff;
+      letter-spacing: -0.02em; margin-bottom: 3px;
+    }
+    .newsletter-bar-text p { font-size: 13px; color: rgba(255,255,255,0.45); }
+    .newsletter-form { display: flex; gap: 8px; flex: 1; min-width: 260px; max-width: 420px; }
+    .newsletter-input {
+      flex: 1; padding: 11px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px; color: #fff;
+      font-size: 13px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+    .newsletter-input:focus { border-color: var(--secondary); }
+    .newsletter-btn {
+      padding: 11px 22px; border-radius: 999px;
+      background: var(--secondary); color: var(--foreground);
+      font-size: 13px; font-weight: 700; border: none;
+      cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
+    }
+    .newsletter-btn:hover { opacity: 0.85; }
+
+    /* ── APPLY TYPE CARDS ───────────────────────────────────── */
+    .apply-type-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 28px;
+    }
+    .apply-type-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.2);
+      padding: 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .apply-type-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(63,142,249,0.1); }
+    .apply-type-icon { font-size: 22px; margin-bottom: 10px; }
+    .apply-type-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .apply-type-card p { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
+    .apply-type-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 700;
+      color: #fff; background: var(--primary);
+      padding: 8px 16px; border-radius: 999px;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .apply-type-btn:hover { opacity: 0.85; }
+    .apply-type-btn.secondary { background: var(--foreground); }
+
+    /* ── INHOLLAND LOGO FOOTER ──────────────────────────────── */
+    .inholland-footer-logo {
+      margin-top: 20px; opacity: 0.5;
+    }
+    .inholland-footer-logo svg { width: 110px; }
+
+    /* ── LAB HARDWARE LIST ──────────────────────────────────── */
+    .lab-hardware {
+      margin-top: 28px; padding: 24px 24px 20px;
+      background: var(--muted-bg); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.2);
+    }
+    .lab-hardware h5 {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 14px;
+    }
+    .lab-hw-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .lab-hw-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: #555;
+    }
+    .lab-hw-item::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary); flex-shrink: 0;
+    }
+
+    /* ── 3-COL TECH GRID ────────────────────────────────────── */
+    .tech-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+
     /* ── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 960px) {
       .container { padding: 0 24px; }
       #navbar, #navbar.scrolled { padding: 14px 24px; }
       .nav-links { display: none; }
-      .about-inner, .lab-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-inner, .lab-grid, .apply-inner, .testimonials-grid { grid-template-columns: 1fr; gap: 48px; }
       .tech-grid { grid-template-columns: 1fr 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
       .stat-item { border-right: none; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -641,11 +1133,15 @@
       .footer-top { grid-template-columns: 1fr; gap: 36px; }
       #ann-2, #ann-3, #ann-4 { display: none; }
       #ann-1 { bottom: 10%; left: 5%; right: 5%; width: auto; max-width: none; }
+      .program-grid { grid-template-columns: 1fr 1fr; }
+      .activities-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
       .tech-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       #hero-intro h1 { font-size: 52px; }
+      .program-grid, .activities-grid { grid-template-columns: 1fr; }
+      .nav-logo-text { font-size: 11px; }
     }
   </style>
 </head>
@@ -660,19 +1156,102 @@
   </div>
 </div>
 
+<!-- NEWSLETTER MODAL -->
+<div id="newsletter-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:36px 32px;max-width:420px;width:90%;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.2);">
+    <button onclick="document.getElementById('newsletter-modal').style.display='none'" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:20px;cursor:pointer;color:#888;">✕</button>
+    <h3 style="font-size:20px;font-weight:900;letter-spacing:-0.02em;margin-bottom:6px;">Stay in the loop</h3>
+    <p style="font-size:14px;color:#666;line-height:1.6;margin-bottom:20px;">Get updates on the Emerging Tech Minor + Lab — events, research, and open applications.</p>
+    <form onsubmit="handleNewsletterSubmit(event,'modal')" style="display:flex;gap:8px;">
+      <input class="newsletter-input" type="email" placeholder="your@email.com" required style="flex:1;padding:11px 16px;border:1px solid #e2e8f0;border-radius:999px;font-size:13px;font-family:inherit;outline:none;color:#252827;" />
+      <button class="newsletter-btn" type="submit" style="padding:11px 20px;border-radius:999px;background:var(--primary);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;">Subscribe</button>
+    </form>
+    <p style="font-size:11px;color:#aaa;margin-top:12px;">No spam. Unsubscribe at any time.</p>
+  </div>
+</div>
+
+<!-- APPLY MODAL -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:36px 32px;max-width:480px;width:90%;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.2);">
+    <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:20px;cursor:pointer;color:#888;">✕</button>
+    <h3 style="font-size:20px;font-weight:900;letter-spacing:-0.02em;margin-bottom:6px;">How would you like to apply?</h3>
+    <p style="font-size:14px;color:#666;line-height:1.6;margin-bottom:24px;">Choose the path that matches your situation.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <a href="https://inholland.sharepoint.com/sites/KeuzeonderwijsCRB/SitePages/Track22/en/Emerging-Technologies.aspx" target="_blank" style="display:block;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;padding:20px;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#3f8ef9'" onmouseout="this.style.borderColor='#e2e8f0'">
+        <div style="font-size:24px;margin-bottom:10px;">🏫</div>
+        <h5 style="font-size:14px;font-weight:700;color:#252827;margin-bottom:6px;">Inholland Student</h5>
+        <p style="font-size:12px;color:#64748b;line-height:1.5;margin-bottom:12px;">Register via the Inholland internal minor registration system.</p>
+        <span style="font-size:12px;font-weight:700;color:#3f8ef9;">Inholland Portal →</span>
+      </a>
+      <a href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank" style="display:block;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;padding:20px;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#3f8ef9'" onmouseout="this.style.borderColor='#e2e8f0'">
+        <div style="font-size:24px;margin-bottom:10px;">🎓</div>
+        <h5 style="font-size:14px;font-weight:700;color:#252827;margin-bottom:6px;">Kies op Maat</h5>
+        <p style="font-size:12px;color:#64748b;line-height:1.5;margin-bottom:12px;">From another Dutch university? Apply via Kies op Maat.</p>
+        <span style="font-size:12px;font-weight:700;color:#252827;">Kiesopmaat →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
 <!-- NAVBAR -->
 <nav id="navbar">
   <a class="nav-logo" href="#">
-    <div class="nav-logo-mark">ET</div>
-    <div class="nav-logo-text">Emerging <span>Tech</span></div>
+    <div class="nav-logo-mark">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#3f8ef9"/>
+        <!-- halftone dot grid, larger dots toward center -->
+        <circle cx="16" cy="16" r="3.2" fill="#a1ffb2" opacity="0.95"/>
+        <circle cx="11" cy="16" r="2.4" fill="#a1ffb2" opacity="0.9"/>
+        <circle cx="21" cy="16" r="2.4" fill="#a1ffb2" opacity="0.9"/>
+        <circle cx="16" cy="11" r="2.4" fill="#a1ffb2" opacity="0.9"/>
+        <circle cx="16" cy="21" r="2.4" fill="#a1ffb2" opacity="0.9"/>
+        <circle cx="11" cy="11" r="1.7" fill="#a1ffb2" opacity="0.8"/>
+        <circle cx="21" cy="11" r="1.7" fill="#a1ffb2" opacity="0.8"/>
+        <circle cx="11" cy="21" r="1.7" fill="#a1ffb2" opacity="0.8"/>
+        <circle cx="21" cy="21" r="1.7" fill="#a1ffb2" opacity="0.8"/>
+        <circle cx="6"  cy="16" r="1.1" fill="#a1ffb2" opacity="0.55"/>
+        <circle cx="26" cy="16" r="1.1" fill="#a1ffb2" opacity="0.55"/>
+        <circle cx="16" cy="6"  r="1.1" fill="#a1ffb2" opacity="0.55"/>
+        <circle cx="16" cy="26" r="1.1" fill="#a1ffb2" opacity="0.55"/>
+        <circle cx="6"  cy="11" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="6"  cy="21" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="26" cy="11" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="26" cy="21" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="11" cy="6"  r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="21" cy="6"  r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="11" cy="26" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+        <circle cx="21" cy="26" r="0.9" fill="#a1ffb2" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="nav-logo-text">Emerging <span>Tech</span> Minor + Lab</div>
   </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#technologies">Technologies</a></li>
     <li><a href="#lab">The Lab</a></li>
+    <li><a href="#team">Team</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#apply">Apply</a></li>
   </ul>
-  <a class="nav-cta" href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank">Apply Now</a>
+  <div class="nav-right">
+    <div class="nav-socials">
+      <!-- Instagram -->
+      <a class="nav-social-icon" href="https://instagram.com/emergingtechminorinholland" target="_blank" title="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <!-- TikTok -->
+      <a class="nav-social-icon" href="https://www.tiktok.com/@emergingtechminor" target="_blank" title="TikTok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+      </a>
+      <!-- Email -->
+      <a class="nav-social-icon" href="mailto:emergingtechminor@inholland.nl" title="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+      </a>
+      <a class="nav-social-icon" href="https://inholland.us19.list-manage.com/subscribe?u=00c36a4ae41435874c5c634c8&id=c02c09343e" title="Subscribe to Newsletter" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </a>
+    </div>
+    <a class="nav-cta" href="#" onclick="event.preventDefault();var m=document.getElementById('apply-modal');m.style.display='flex';">Apply Now</a>
+  </div>
 </nav>
 
 <!-- ─────────────────────────────────────────────────────────── -->
@@ -697,9 +1276,16 @@
     <div id="hero-intro">
       <div class="hero-badge">
         <span style="width:6px;height:6px;border-radius:50%;background:var(--secondary);display:inline-block;"></span>
-        Inholland University · Amsterdam
+        International Minor · Inholland University of Applied Sciences
       </div>
       <h1>EMERGING<br /><span class="outline">TECH</span></h1>
+      <p class="hero-minor-label">MINOR + LAB</p>
+      <div class="hero-chips">
+        <span class="hero-chip">30 Credits</span>
+        <span class="hero-chip">6 Months · Sept–Jan</span>
+        <span class="hero-chip">English Taught</span>
+        <span class="hero-chip">Amsterdam</span>
+      </div>
       <div class="hero-scroll-hint">
         <span>Scroll to explore</span>
         <div class="scroll-arrow"></div>
@@ -719,21 +1305,14 @@
         <span class="ann-dot" style="background:var(--secondary)"></span>02 · Immersion
       </div>
       <h3>Extended Reality</h3>
-      <p>Design immersive experiences across VR, AR, and MR with industry-grade tools in the Sluislab.</p>
+      <p>Design immersive experiences across VR, AR, and MR with industry-grade tools at the Emerging Tech Lab.</p>
     </div>
     <div class="annotation" id="ann-3">
       <div class="ann-tag">
         <span class="ann-dot" style="background:var(--accent)"></span>03 · Automation
       </div>
       <h3>Robotics</h3>
-      <p>Program intelligent robots for social, agricultural, and creative applications.</p>
-    </div>
-    <div class="annotation" id="ann-4">
-      <div class="ann-tag">
-        <span class="ann-dot" style="background:#f9a53f"></span>04 · Trust
-      </div>
-      <h3>Blockchain</h3>
-      <p>Rethink ownership and value exchange with decentralised systems for the creative economy.</p>
+      <p>Program intelligent robots for social and creative applications.</p>
     </div>
 
   </div>
@@ -744,59 +1323,133 @@
 <!-- ─────────────────────────────────────────────────────────── -->
 <section id="about">
   <div class="container">
-    <div class="about-inner">
+    <div class="about-single reveal">
+      <p class="section-label">About the Minor</p>
+      <h2 class="section-title">Embrace<br /><span class="accent">the Future</span></h2>
+      <p>The <strong>Emerging Tech Minor + Lab</strong> at <strong>Inholland University of Applied Sciences</strong> is designed specifically for <strong>creative and business-minded students</strong> who want to understand and apply the technologies shaping our world.</p>
+      <p>No technical experience required. This minor is for curious minds from all study backgrounds — together we explore how AI, XR, Robotics, and IoT are reshaping <strong>creative and business contexts</strong>.</p>
+      <p>Alongside the minor, the <strong>Emerging Tech Lab</strong> runs applied research for the creative industries, building knowledge that feeds back into both education and practice.</p>
 
-      <div class="about-left reveal">
-        <p class="section-label">What We Do</p>
-        <h2 class="section-title">A Lab<br />for the <span class="accent">Future</span></h2>
-        <p>The <strong>Emerging Technologies Minor</strong> at Inholland is an international programme for curious minds from all study backgrounds — no technical experience required.</p>
-        <p>We explore how technologies like AI, XR, Blockchain, Robotics and IoT are reshaping the world — and how to apply them in <strong>creative, social and business contexts</strong>.</p>
-        <p>The Lab drives applied research alongside education, producing knowledge that feeds directly back into industry and teaching practice.</p>
-        <div class="quote-card">
-          <p>"We want students to become resilient for the future. The minor aligns with digital literacy and lifelong learning principles."</p>
-          <cite>— Shant Bayramian, Co-founder</cite>
+      <div class="about-quotes">
+        <div class="about-quote-card reveal d1">
+          <blockquote>"This minor completely changed how I think about technology. Coming from a marketing background, I never thought I'd be building AR prototypes — but here I am."</blockquote>
+          <span class="aq-author">Marketing Student · Cohort 2025–26</span>
+        </div>
+        <div class="about-quote-card reveal d2">
+          <blockquote>"I came in as a design student and left as someone who can prototype with AI and pitch to real clients. Unlike anything else I've studied."</blockquote>
+          <span class="aq-author">Design Student · Cohort 2025–26</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- LEARNING ACTIVITIES                                          -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="activities">
+  <div class="container">
+    <p class="section-label reveal">How We Learn</p>
+    <h2 class="section-title reveal">Learning<br /><span style="color:var(--secondary)">Activities</span></h2>
+    <div class="activities-grid">
+
+      <div class="activity-card reveal">
+        <span class="activity-icon">🎙️</span>
+        <h4>Interactive Lectures</h4>
+        <p>Expert-led sessions with industry professionals, researchers, and practitioners — bringing real-world perspectives into every topic.</p>
+      </div>
+
+      <div class="activity-card reveal d1">
+        <span class="activity-icon">🔬</span>
+        <h4>Hands-on Labs</h4>
+        <p>Get your hands on XR headsets, robots, 3D printers, and AI tools inside the Emerging Tech Lab — learning by building and experimenting.</p>
+      </div>
+
+      <div class="activity-card reveal d2">
+        <span class="activity-icon">👥</span>
+        <h4>Group Projects</h4>
+        <p>Multi-disciplinary team challenges with real industry briefs. Develop prototypes, strategies, and presentations for actual clients.</p>
+      </div>
+
+      <div class="activity-card reveal d3">
+        <span class="activity-icon">✈️</span>
+        <h4>(Inter)national Field Trips</h4>
+        <p>Visits to tech labs and innovation hubs in the region, plus international hackathons — including past collaborations in Denmark.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- IN THIS MINOR, YOU WILL                                      -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="minor-will">
+  <div class="container">
+    <p class="section-label reveal">Programme</p>
+    <h2 class="section-title reveal">In this minor, you will:</h2>
+    <div class="minor-will-list">
+
+      <div class="minor-will-item reveal">
+        <div class="mw-icon blue">💡</div>
+        <div>
+          <h4>Explore the Future</h4>
+          <p>Discover how AI, XR, Robotics, and IoT are transforming the way we work, create, and connect — and learn to apply these technologies in real contexts.</p>
         </div>
       </div>
 
-      <div class="about-right">
-        <div class="fact-row reveal d1">
-          <div class="fact-icon blue">🎓</div>
-          <div class="fact-body">
-            <h4>30 EC · Full-Time Minor</h4>
-            <p>English-taught, semester-long. Open to all Inholland students and international partner university students.</p>
-          </div>
+      <div class="minor-will-item reveal d1">
+        <div class="mw-icon green">🌍</div>
+        <div>
+          <h4>Create Real Impact</h4>
+          <p>Work with real clients and design solutions that tackle business and societal challenges — from virtual tourism to AI-driven storytelling.</p>
         </div>
-        <div class="fact-row reveal d2">
-          <div class="fact-icon green">🏭</div>
-          <div class="fact-body">
-            <h4>1/3 Industry Challenge</h4>
-            <p>Real assignments for heritage organisations, health services, museums, and financial institutions.</p>
-          </div>
+      </div>
+
+      <div class="minor-will-item reveal d2">
+        <div class="mw-icon purple">🤝</div>
+        <div>
+          <h4>Collaborate &amp; Lead</h4>
+          <p>Join a multidisciplinary team, learn to take initiative, and grow into a confident professional ready to guide innovation.</p>
         </div>
-        <div class="fact-row reveal d3">
-          <div class="fact-icon purple">🔬</div>
-          <div class="fact-body">
-            <h4>Applied Research</h4>
-            <p>The Lab conducts research in creative industries — publishing insights and experiments with industry partners.</p>
-          </div>
+      </div>
+
+      <div class="minor-will-item reveal d3">
+        <div class="mw-icon orange">🔧</div>
+        <div>
+          <h4>From Ideas to Prototypes</h4>
+          <p>Turn research and creativity into tangible concepts and prototypes that win stakeholder buy-in.</p>
         </div>
-        <div class="fact-row reveal d4">
-          <div class="fact-icon blue">🌍</div>
-          <div class="fact-body">
-            <h4>(Inter)national Field Trips</h4>
-            <p>Immersive visits to innovation hubs, tech labs, and creative studios across borders. Connect with global experts.</p>
-          </div>
-        </div>
-        <div class="fact-row reveal">
-          <div class="fact-icon green">🧭</div>
-          <div class="fact-body">
-            <h4>Technological Sovereignty</h4>
-            <p>Students learn to consciously decide whether and how to adopt technology — not just follow the hype.</p>
-          </div>
+      </div>
+
+      <div class="minor-will-item reveal">
+        <div class="mw-icon green">🌱</div>
+        <div>
+          <h4>Think Critically</h4>
+          <p>Assess the ethical, environmental, and social impact of technology, and design for a sustainable future.</p>
         </div>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- VIDEO                                                        -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="video-section">
+  <div class="container">
+    <p class="section-label reveal">See It In Action</p>
+    <h2 class="section-title reveal">The Minor<br /><span style="color:var(--secondary)">In Motion</span></h2>
+    <a class="yt-thumb-wrap reveal" href="https://www.youtube.com/watch?v=9S_ywBYrHQs" target="_blank" rel="noopener">
+      <img src="https://img.youtube.com/vi/9S_ywBYrHQs/maxresdefault.jpg" alt="Emerging Tech Minor — Inholland" />
+      <div class="yt-play-btn">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+      <span class="yt-watch-label">Watch on YouTube ↗</span>
+    </a>
   </div>
 </section>
 
@@ -807,9 +1460,9 @@
   <div class="container">
     <div class="tech-header">
       <p class="section-label reveal">Core Technologies</p>
-      <h2 class="section-title reveal">Four Forces<br /><span class="accent">Shaping Tomorrow</span></h2>
+      <h2 class="section-title reveal">Three Forces<br /><span class="accent">Shaping Tomorrow</span></h2>
     </div>
-    <div class="tech-grid">
+    <div class="tech-grid tech-grid-3">
 
       <div class="tech-card tc-blue reveal">
         <div class="tech-num">01</div>
@@ -827,7 +1480,7 @@
         <div class="tech-num">02</div>
         <span class="tech-emoji">🥽</span>
         <h3>Extended Reality</h3>
-        <p>Design and prototype in VR, AR, and mixed reality using Unreal Engine and the Sluislab XR hardware suite.</p>
+        <p>Design and prototype in VR, AR, and mixed reality using Unreal Engine and the Emerging Tech Lab XR hardware suite.</p>
         <div class="tech-pills">
           <span class="tech-pill pill-green">VR / AR</span>
           <span class="tech-pill pill-green">Unreal Engine</span>
@@ -839,7 +1492,7 @@
         <div class="tech-num">03</div>
         <span class="tech-emoji">🤖</span>
         <h3>Robotics & IoT</h3>
-        <p>Build and deploy robots that act in the real world — social robots in care, smart farming, and interactive installations.</p>
+        <p>Build and deploy robots that act in the real world — social robots in care and interactive installations.</p>
         <div class="tech-pills">
           <span class="tech-pill pill-purple">Social Robots</span>
           <span class="tech-pill pill-purple">IoT</span>
@@ -847,100 +1500,59 @@
         </div>
       </div>
 
-      <div class="tech-card tc-orange reveal d3">
-        <div class="tech-num">04</div>
-        <span class="tech-emoji">🔗</span>
-        <h3>Blockchain & Web3</h3>
-        <p>Explore decentralised infrastructure, digital ownership, and what trustless systems mean for creative business.</p>
-        <div class="tech-pills">
-          <span class="tech-pill pill-orange">Web3</span>
-          <span class="tech-pill pill-orange">Smart Contracts</span>
-          <span class="tech-pill pill-orange">Decentralisation</span>
-        </div>
-      </div>
 
     </div>
   </div>
 </section>
 
-<!-- ─────────────────────────────────────────────────────────── -->
-<!-- STATS                                                        -->
-<!-- ─────────────────────────────────────────────────────────── -->
-<section id="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item reveal">
-        <div class="stat-num blue" data-target="30">0</div>
-        <div class="stat-label">EC Credits</div>
-      </div>
-      <div class="stat-item reveal d1">
-        <div class="stat-num green" data-target="4">0</div>
-        <div class="stat-label">Core Technologies</div>
-      </div>
-      <div class="stat-item reveal d2">
-        <div class="stat-num purple" data-target="33" data-suffix="%">0%</div>
-        <div class="stat-label">Industry Challenge</div>
-      </div>
-      <div class="stat-item reveal d3">
-        <div class="stat-num white" data-target="100" data-suffix="%">0%</div>
-        <div class="stat-label">Hands-On Learning</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ─────────────────────────────────────────────────────────── -->
 <!-- THE LAB                                                      -->
 <!-- ─────────────────────────────────────────────────────────── -->
 <section id="lab">
   <div class="container">
-    <p class="section-label reveal">Infrastructure</p>
-    <h2 class="section-title reveal">The Lab</h2>
-    <div class="lab-grid">
+    <p class="section-label reveal">Research & Education Hub</p>
+    <h2 class="section-title reveal">Emerging Tech<br /><span class="accent">Lab</span></h2>
 
-      <div class="lab-text reveal">
-        <p>The <strong>Emerging Tech Lab</strong> is a research and education hub embedded in the Inholland Sluislab ecosystem in Amsterdam's Sluisbuurt neighbourhood — connecting students directly with community and industry.</p>
-        <p>Beyond education, the Lab runs <strong>applied research</strong> in creative industries, contributing to the national knowledge infrastructure and publishing actionable insights for practitioners.</p>
-        <ul class="equipment">
-          <li>High-end workstations with GPU compute for AI & generative models</li>
-          <li>VR headsets and full motion capture suite</li>
-          <li>Robotics kits, robotic arms, and Raspberry Pi systems</li>
-          <li>3D printers and rapid prototyping hardware</li>
-          <li>Unreal Engine & real-time rendering pipelines</li>
-          <li>Industry-licensed software ecosystem</li>
-        </ul>
-        <div class="memberships">
-          <span class="membership">Amsterdam Immersive Alliance</span>
-          <span class="membership">CoE CI Network</span>
-          <span class="membership">IX Labs</span>
-          <span class="membership">ARC Research Center</span>
+    <div class="about-single reveal" style="margin-top:48px;">
+      <p>The <strong>Emerging Tech Lab</strong> is a research and education hub embedded at <strong>Inholland University of Applied Sciences</strong> in Amsterdam. It operates at the intersection of emerging technology, creative industries, and applied research, and has three core objectives:</p>
+
+      <div class="fact-row" style="margin-top:20px;">
+        <div class="fact-icon blue">🎓</div>
+        <div class="fact-body">
+          <h4>Emerging Tech Education</h4>
+          <p>Provide high-quality emerging technology education in creative and business contexts for Inholland University of Applied Sciences — primarily through the Emerging Tech Minor.</p>
+        </div>
+      </div>
+      <div class="fact-row" style="margin-top:12px;">
+        <div class="fact-icon green">🔬</div>
+        <div class="fact-body">
+          <h4>Applied Research</h4>
+          <p>Conduct applied research in emerging technologies within creative and business contexts — producing actionable knowledge for practitioners and the broader field.</p>
+        </div>
+      </div>
+      <div class="fact-row" style="margin-top:12px;">
+        <div class="fact-icon purple">🔄</div>
+        <div class="fact-body">
+          <h4>Research Integration</h4>
+          <p>Integrate research findings back into industry practice and education — ensuring that the Lab's outputs have real impact beyond the university walls.</p>
         </div>
       </div>
 
-      <div class="lab-cards reveal d1">
-        <div class="lab-card">
-          <h4>🏗️ Sluislab Amsterdam</h4>
-          <p>Our primary base — a living lab in a developing Amsterdam neighbourhood, co-creating with residents and industry.</p>
-        </div>
-        <div class="lab-card">
-          <h4>🥽 IMI Lab</h4>
-          <p>Interactive Media & Immersion lab for XR prototyping, game design, and immersive narrative production.</p>
-        </div>
-        <div class="lab-card">
-          <h4>🌱 Sustainable Media Lab</h4>
-          <p>Explores responsible media production and the environmental footprint of creative technology.</p>
-        </div>
-        <div class="lab-card">
-          <h4>🏙️ Urban Leisure & Tourism Lab</h4>
-          <p>Technology applications in hospitality, tourism, and urban experience design across Amsterdam & Rotterdam.</p>
-        </div>
-        <div class="lab-card">
-          <h4>📚 ARC Research Center</h4>
-          <p>Applied Research × Creativity — practice-based research offering new perspectives on creative industries.</p>
+      <div class="lab-hardware reveal" style="margin-top:28px;">
+        <h5>Hardware at the Lab</h5>
+        <div class="lab-hw-grid">
+          <span class="lab-hw-item">VR headsets &amp; spatial display systems</span>
+          <span class="lab-hw-item">Robotic arms &amp; social robots</span>
+          <span class="lab-hw-item">Raspberry Pi systems &amp; IoT kits</span>
+          <span class="lab-hw-item">Motion capture (mocap) suit</span>
+          <span class="lab-hw-item">3D printers &amp; rapid prototyping</span>
+          <span class="lab-hw-item">360° cameras &amp; spatial audio rigs</span>
+          <span class="lab-hw-item">Industry-licensed software suite</span>
         </div>
       </div>
-
     </div>
+
   </div>
 </section>
 
@@ -966,31 +1578,34 @@
       <div class="pcard-grid">
 
         <div class="pcard reveal">
-          <div class="pcard-type">Research · Archive</div>
-          <h4>Dutch Graffiti Library Project</h4>
-          <p>Documenting and archiving Dutch graffiti culture using digital tools and emerging technology for preservation and public access.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <div class="pcard-type">Research · Immersive Heritage</div>
+          <h4>Dutch Graffiti Library On Tour</h4>
+          <p>A research project digitally preserving Dutch graffiti culture using Gaussian splatting (3D imaging), VR, and AR. Co-creative design sessions with young people build interactive experiences, with a replicable toolkit for cultural institutions across Europe.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Sept 2025 – Sept 2026 · Partners: Dutch Graffiti Library, OBA Next Lab, European Cultural Foundation, Amsterdam Immersive Alliance · Funded by The Europe Challenge</p>
+          <a class="coming-soon" href="https://www.inholland.nl/onderzoek/onderzoeksprojecten/digitale-beleving-van-graffiti-cultuur-dutch-graffiti-library-on-tour/" target="_blank" style="text-decoration:none;">Read more ↗</a>
         </div>
 
         <div class="pcard reveal d1">
           <div class="pcard-type">Research · CoE CI</div>
-          <h4>CoE CI Project</h4>
-          <p>Centre of Expertise Creative Industries research — exploring how technology can serve creative professionals. Includes previous year's work and Pawan's ongoing research.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>Designing Immersive Experiences for Connectedness &amp; Belonging</h4>
+          <p>Research exploring how VR and AR can strengthen social connection in an increasingly individualized world. Collaborates with dance company Another Kind of Blue to prototype XR experiences centred on empathy, inclusivity, and collective engagement.</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Led by Dr. Pawan Bhansing · Team: Shant Bayramian, Mark Jacobs · Partner: Another Kind of Blue</p>
+          <a class="coming-soon" href="https://coeci.nl/projecten/designing-and-developing-immersive-experiences-for-connectedness-and-belonging-in-an-era-of-increasing-individualization-2/" target="_blank" style="text-decoration:none;">Read more ↗</a>
         </div>
 
-        <div class="pcard reveal d2">
-          <div class="pcard-type">Research · Education</div>
-          <h4>KERN Project</h4>
-          <p>Developing core competencies and curriculum frameworks for technology-driven creative education programmes in the Netherlands.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
 
         <div class="pcard reveal">
-          <div class="pcard-type">Research · Partnership</div>
-          <h4>Associated Partner</h4>
-          <p>Active participation in associated partner networks, contributing expertise and research capacity to collaborative projects across institutions.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <div class="pcard-type">Research · Grant Pending</div>
+          <h4>NWO Start — VR Storytelling for Postcolonial Narratives</h4>
+          <p>A proposed research project investigating how VR can be used as a medium for postcolonial storytelling — exploring immersive narrative formats that center underrepresented historical perspectives.</p>
+          <span class="coming-soon" style="color:var(--accent);border-color:rgba(180,167,244,0.4);">Grant application pending</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Research · Network · IX Labs</div>
+          <h4>Associated Partner — IX Labs (CIIIC)</h4>
+          <p>The Emerging Tech Lab is an associated partner of IX Labs — a nationwide Dutch network of facilities for research and innovation in immersive experiences. The connected hubs provide access to VR headsets, AR devices, motion capture, and 360° cameras, serving creators, businesses, researchers, and educational institutions.</p>
+          <a class="coming-soon" href="https://www.ciiic.nl/en/labs" target="_blank" style="text-decoration:none;">About IX Labs ↗</a>
         </div>
 
       </div>
@@ -1003,64 +1618,58 @@
         <div class="pcard reveal">
           <div class="pcard-type">Education · Accreditation</div>
           <h4>Accreditation — TM &amp; CB</h4>
-          <p>Supporting accreditation for Tourism Management and Creative Business programmes, integrating emerging tech competencies into formal curriculum frameworks.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <p>The Lab supported accreditation for the Tourism Management and Creative Business programmes by developing immersive experiences — including Gaussian splatting environments and 360° content — to present the programmes and their physical locations to external accreditation committees.</p>
         </div>
 
         <div class="pcard reveal d1">
           <div class="pcard-type">Education · Programme</div>
-          <h4>Production Lab Week — CB</h4>
-          <p>An intensive production lab week in the Creative Business programme, giving students sprint-format hands-on experience with emerging technology.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>XR Production Lab Week — Creative Business</h4>
+          <p>The Lab hosts an intensive one-week pressure cooker in XR for 2nd year Creative Business students. Students go from concept to prototype in immersive media — building hands-on experience in VR/AR production under sprint conditions.</p>
         </div>
 
         <div class="pcard reveal d2">
           <div class="pcard-type">Education · International</div>
-          <h4>Denmark Hackathon</h4>
-          <p>International hackathon collaboration with Danish institutions — cross-border innovation sprints for creative tech students.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>Hackathon with Kolding Design School</h4>
+          <p>The Lab collaborates with Kolding Design School (Denmark) to organise a cross-border hackathon between Emerging Tech Minor students and Kolding students — bringing together creative and tech perspectives for rapid innovation challenges.</p>
         </div>
 
         <div class="pcard reveal">
-          <div class="pcard-type">Education · Competition</div>
-          <h4>Emerging Tech Olympiad</h4>
-          <p>National competition where students demonstrate technological skills and creative problem-solving at scale.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <div class="pcard-type">Education · Competition · 🥇 Gold</div>
+          <h4>Emerging Technologies Olympiad — Hong Kong 2025</h4>
+          <p>Inholland students won first place at the Emerging Technologies Olympiad 2025 in Hong Kong, competing against 40+ international teams with AI, XR, and machine learning solutions. The Emerging Tech Lab facilitated and coached the winning teams: Team Betternative (Gold — machine vision for sustainable fashion), Team Aithos (Bronze), and Team HoloMed (Award of Merit).</p>
+          <a class="coming-soon" href="https://www.inholland.nl/nieuws/en/inholland-students-win-gold-at-international-tech-olympiad-hong-kong/" target="_blank" style="text-decoration:none;">Read more ↗</a>
         </div>
 
         <div class="pcard reveal d1">
           <div class="pcard-type">Education · Industry Event</div>
-          <h4>Immersive Tech Week</h4>
-          <p>Annual participation in Amsterdam's leading XR industry event — connecting students with professionals and cutting-edge immersive work.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>Immersive Tech Week Rotterdam</h4>
+          <p>The Lab and XR Production Lab partnered with Immersive Tech Week Rotterdam to advance XR education. 100 students and 10 staff participated, with students placing second in a national hackathon and delivering six presentations from the XR Production Lab stage.</p>
+          <a class="coming-soon" href="https://www.inholland.nl/nieuws/en/driving-xr-education-at-inholland-with-partners/" target="_blank" style="text-decoration:none;">Read more ↗</a>
         </div>
 
         <div class="pcard reveal d2">
           <div class="pcard-type">Education · Event</div>
-          <h4>Digiquest</h4>
-          <p>Organisation and strategic development of Digiquest — a national showcase and challenge platform for digital creativity and emerging tech.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>DigiQuest — The Future of Work</h4>
+          <p>A two-day Inholland event exploring how AI, AR, and blockchain will shape the future workplace. The Lab and Minor helped with organisation and event development, bringing together industry partners including KLM, ABN AMRO, BTG, and OpenAI Talks for students and educators.</p>
+          <a class="coming-soon" href="https://www.inholland.nl/nieuws/persinformatie-digiquest-the-future-of-work/" target="_blank" style="text-decoration:none;">Read more ↗</a>
         </div>
 
         <div class="pcard reveal">
           <div class="pcard-type">Education · Institutional</div>
           <h4>AI-Ready Faculty Support</h4>
-          <p>Supporting the Inholland Centre for Teaching &amp; Learning and AI-Ready team in the Faculty of Creative Business — embedding AI literacy institution-wide.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <p>The Lab provides strategic and educational support to the faculty-wide AI network at Inholland's Faculty of Creative Business — helping the institution develop coherent AI literacy frameworks, tools, and teaching strategies across all programmes.</p>
         </div>
 
         <div class="pcard reveal d1">
-          <div class="pcard-type">Education · Funding</div>
-          <h4>Open Learning Materials</h4>
-          <p>Subsidies obtained from Student Participation Funds, Student Initiative Funds, and Subsidies for Open Learning Materials to develop open-access educational resources.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <div class="pcard-type">Education · Open Access</div>
+          <h4>Open Learning Materials in XR &amp; AI</h4>
+          <p>The Lab has developed open learning materials in XR and AI — available for universities around the world to use freely.</p>
         </div>
 
         <div class="pcard reveal d2">
           <div class="pcard-type">Education · Industry</div>
-          <h4>Digital Humans for Smart Concepts</h4>
-          <p>Exploring AI-driven digital human avatars in smart business concepts — combining XR and creative strategy for next-gen brand and service experiences.</p>
-          <span class="coming-soon">More info coming soon</span>
+          <h4>Digital Humans for Education</h4>
+          <p>The Lab developed a range of digital human formats for educational ends: 2D AI presenter videos using Synthesia, fully interactive 3D avatars, and 360° VR quiz experiences — enabling scalable, immersive learning content for students and educators alike.</p>
         </div>
 
       </div>
@@ -1068,57 +1677,10 @@
 
     <!-- STUDENT SHOWCASE -->
     <div class="tab-pane" id="tab-student">
-      <div class="pcard-grid">
-
-        <div class="pcard reveal">
-          <div class="pcard-type">Student Project · AI + XR</div>
-          <h4>OBA Next — Library of the Future</h4>
-          <p>Students partnered with OBA Next to explore how AI and XR can transform the Amsterdam library into an immersive, intelligent learning environment.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
-
-        <div class="pcard reveal d1">
-          <div class="pcard-type">Student Project · AI</div>
-          <h4>AI Book Club</h4>
-          <p>An interactive literary experience where AI visualises participants' mental images of story characters, sparking discussion about differing interpretations.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
-
-        <div class="pcard reveal d2">
-          <div class="pcard-type">Student Project · Platform</div>
-          <h4>Digital Reservation Platform</h4>
-          <p>A smart, autonomous booking and information platform for the OBA Next Lab — facilitating community access and idea exchange without staff intervention.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
-
-        <div class="pcard reveal">
-          <div class="pcard-type">Student Project · Robotics</div>
-          <h4>Social Robots in Care</h4>
-          <p>Deploying social robots in care and wellbeing settings — exploring how robots can meaningfully support human connection and daily routines.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
-
-        <div class="pcard reveal d1">
-          <div class="pcard-type">Student Project · IoT</div>
-          <h4>Smart Farming</h4>
-          <p>Precision agriculture using IoT sensors, robotics, and data visualisation to create intelligent growing environments for sustainable food production.</p>
-          <span class="coming-soon">More info coming soon</span>
-        </div>
-
-        <div class="pcard reveal d2" style="border-color: rgba(63,142,249,0.3);">
-          <div class="pcard-type" style="color:var(--accent)">Student Project · 2026–27</div>
-          <h4>Next Cohort</h4>
-          <p>The next generation of Emerging Tech students is forming now. Their projects will live here — AI prototypes, XR experiences, blockchain experiments, and more.</p>
-          <span class="coming-soon" style="color:var(--primary);border-color:rgba(63,142,249,0.3)">Applications open</span>
-        </div>
-
-      </div>
-
-      <div class="aftermovie-box reveal">
-        <div class="icon">🎬</div>
-        <strong>Aftermovie</strong>
-        <p>The year's aftermovie will be embedded here — a visual record of student work, lab sessions, events, and outcomes from the inaugural cohort.</p>
-        <span class="coming-soon">Video coming soon</span>
+      <div style="text-align:center;padding:80px 20px;">
+        <div style="font-size:48px;margin-bottom:16px;">🎓</div>
+        <h3 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px;">Student Projects Coming Soon</h3>
+        <p style="font-size:15px;color:var(--muted);max-width:420px;margin:0 auto;line-height:1.7;">Student work, prototypes, and showcases from the Emerging Tech Minor cohort will be published here.</p>
       </div>
     </div>
 
@@ -1129,33 +1691,260 @@
         <div class="conf-item reveal">
           <div class="conf-n">01</div>
           <div>
-            <h4>XR Day at SURF</h4>
-            <p>Presenting research and student work at SURF's XR Day — the national platform for extended reality in Dutch higher education.</p>
-            <span class="coming-soon">More info coming soon</span>
+            <h4>National XR Day 2025 — SURF</h4>
+            <p><strong>"Looking for Togetherness"</strong> — a workshop on designing immersive XR experiences for connectedness and belonging, presented by Shant Bayramian, Dr. Pawan Bhansing, and Mark Jacobs. Interactive activities explored how immersive media can combat digital loneliness and foster collective engagement.</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:6px;">2 July 2025 · SURF National XR Day · In collaboration with Another Kind of Blue</p>
+            <a class="coming-soon" href="https://pretalx.surf.nl/national-xr-day-2025/talk/JLZNXN/" target="_blank" style="text-decoration:none;">View talk ↗</a>
           </div>
         </div>
 
         <div class="conf-item reveal d1">
           <div class="conf-n">02</div>
           <div>
-            <h4>EMMA</h4>
-            <p>Sharing insights on emerging technology education in the creative industries context at EMMA.</p>
-            <span class="coming-soon">More info coming soon</span>
+            <h4>European Media Management Conference (EMMA) 2025</h4>
+            <p>Shant Bayramian presented research on GenAI and media innovation at the EMMA 2025 conference — sharing insights on the intersection of emerging technology and creative industries education in a European context.</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:6px;">2025 · #EMMA2025 #MediaInnovation #GenAI</p>
+            <a class="coming-soon" href="https://www.linkedin.com/posts/shant-bayramian_emma2025-mediainnovation-genai-activity-7338194096345305091-SN3n" target="_blank" style="text-decoration:none;">View on LinkedIn ↗</a>
           </div>
         </div>
 
         <div class="conf-item reveal d2">
           <div class="conf-n">03</div>
           <div>
-            <h4>XR Metaverse Conference</h4>
-            <p>Representing Inholland's Emerging Tech Lab — contributing to national and international conversations on immersive futures.</p>
-            <span class="coming-soon">More info coming soon</span>
+            <h4>XR Metaverse Conference 2025</h4>
+            <p>Research on how VR can be used as a medium for <strong>Videographic Criticism</strong> was presented — exploring immersive video essay formats as a tool for critical analysis and scholarly communication in the arts and humanities.</p>
           </div>
         </div>
 
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- TEAM                                                         -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="team">
+  <div class="container">
+    <p class="section-label reveal">The People</p>
+    <h2 class="section-title reveal">Meet the<br /><span class="accent">Team</span></h2>
+    <div class="team-grid">
+
+      <div class="team-card reveal">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#3f8ef9,#2563eb);">SB</div>
+        <h4>Shant Bayramian</h4>
+        <span class="team-role">Director, Emerging Tech Lab &amp; Minor</span>
+      </div>
+
+      <div class="team-card reveal d1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">TP</div>
+        <h4>Tom Parry</h4>
+        <span class="team-role">Lecturer — Leading Innovation</span>
+      </div>
+
+      <div class="team-card reveal d2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">AV</div>
+        <h4>Alistair Vardy</h4>
+        <span class="team-role">Lecturer — Robotics &amp; Automated Systems</span>
+      </div>
+
+      <div class="team-card reveal d1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#f97316,#ea580c);">GT</div>
+        <h4>Giulia Timis</h4>
+        <span class="team-role">Lecturer — XR</span>
+      </div>
+
+      <div class="team-card reveal d2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0891b2,#0e7490);">WV</div>
+        <h4>Werner de Valk</h4>
+        <span class="team-role">Lecturer — AI</span>
+      </div>
+
+      <div class="team-card reveal d3">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d);">AE</div>
+        <h4>Abtin Erfani</h4>
+        <span class="team-role">Marketing Manager</span>
+      </div>
+
+      <div class="team-card reveal d2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706);">AS</div>
+        <h4>Anzhelika Schoonbaert</h4>
+        <span class="team-role">Lab Coordinator</span>
+      </div>
+
+      <div class="team-card reveal d3">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#6366f1,#4338ca);">PB</div>
+        <h4>Pawan Bhansing</h4>
+        <span class="team-role">Researcher</span>
+      </div>
+
+      <div class="team-card reveal d4">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">MJ</div>
+        <h4>Mark Jacobs</h4>
+        <span class="team-role">Researcher</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- PARTNERS                                                     -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="partners">
+  <div class="container">
+    <p class="section-label reveal">Our Network</p>
+    <h2 class="section-title reveal">Partners &amp;<br /><span class="accent">Collaborators</span></h2>
+    <div class="partners-grid">
+
+      <a class="partner-card reveal" href="https://www.amsterdamimmersivealliance.com" target="_blank">
+        <div class="partner-logo">
+          <div class="partner-logo-text" style="color:#3f8ef9;font-size:11px;font-weight:900;letter-spacing:0.02em;text-transform:uppercase;">Amsterdam<br/>Immersive Alliance</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d1" href="https://coeci.nl" target="_blank">
+        <div class="partner-logo">
+          <div class="partner-logo-text" style="color:#8b5cf6;font-size:22px;">CoE CI</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d2" href="https://www.anotherkindofblue.com" target="_blank">
+        <div class="partner-logo">
+          <div class="partner-logo-text" style="color:#0891b2;font-size:13px;font-weight:900;">Another Kind<br/>of Blue</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d1" href="https://www.brokenegg.io" target="_blank">
+        <div class="partner-logo">
+          <div class="partner-logo-text" style="color:#f97316;font-size:18px;font-weight:900;">Broken Egg</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d2" href="https://www.buas.nl" target="_blank">
+        <div class="partner-logo">
+          <img src="https://cdn.brandfetch.io/buas.nl/logo" alt="BUas" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="partner-logo-text" style="color:#252827;font-size:26px;font-weight:900;display:none;">BUas</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d3" href="https://www.hva.nl" target="_blank">
+        <div class="partner-logo">
+          <img src="https://cdn.brandfetch.io/hva.nl/logo" alt="HvA" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="partner-logo-text" style="color:#e11d48;font-size:26px;font-weight:900;display:none;">HvA</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d2" href="https://dutch-graffiti-library.nl" target="_blank">
+        <div class="partner-logo">
+          <div class="partner-logo-text" style="color:#252827;font-size:11px;font-weight:900;letter-spacing:0.02em;text-transform:uppercase;">Dutch Graffiti<br/>Library</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d3" href="https://www.designskolenkolding.dk/en" target="_blank">
+        <div class="partner-logo">
+          <img src="https://cdn.brandfetch.io/dskd.dk/logo" alt="Kolding Design School" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="partner-logo-text" style="color:#252827;font-size:11px;font-weight:900;letter-spacing:0.02em;text-transform:uppercase;display:none;">Kolding<br/>Design School</div>
+        </div>
+      </a>
+
+      <a class="partner-card reveal d4" href="https://www.surf.nl" target="_blank">
+        <div class="partner-logo">
+          <img src="https://cdn.brandfetch.io/surf.nl/logo" alt="SURF" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="partner-logo-text" style="color:#3f8ef9;font-size:28px;font-weight:900;display:none;">SURF</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- APPLY NOW                                                    -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="apply">
+  <div class="container">
+    <p class="section-label reveal">Join the Minor</p>
+    <h2 class="section-title reveal">Apply<br /><span class="accent">Now</span></h2>
+    <div class="apply-inner">
+
+      <div class="apply-left reveal">
+        <p>The Emerging Tech Minor + Lab is open to students from <strong>all study backgrounds</strong> — no technical experience required. We welcome curious, motivated students who want to shape the future of creative industries.</p>
+        <p style="margin-top:0"><strong>Eligibility — you can apply if you are:</strong></p>
+        <ul class="eligibility-list">
+          <li>An Inholland student from any faculty or programme</li>
+          <li>A Kies op Maat student from another Dutch university</li>
+          <li>An international student from a partner university</li>
+          <li>In your 2nd year or beyond</li>
+          <li>Able to commit to full-time study (30 EC)</li>
+          <li>Comfortable studying in English</li>
+        </ul>
+
+        <p style="margin-top:20px"><strong>How to apply — choose your path:</strong></p>
+        <div class="apply-type-grid">
+          <div class="apply-type-card">
+            <div class="apply-type-icon">🏫</div>
+            <h5>Inholland Students</h5>
+            <p>Register via the Inholland internal minor registration system.</p>
+            <a class="apply-type-btn" href="https://inholland.sharepoint.com/sites/KeuzeonderwijsCRB/SitePages/Track22/en/Emerging-Technologies.aspx" target="_blank">Inholland Portal →</a>
+          </div>
+          <div class="apply-type-card">
+            <div class="apply-type-icon">🎓</div>
+            <h5>Kies op Maat Students</h5>
+            <p>From another Dutch university? Apply directly via the Kies op Maat platform.</p>
+            <a class="apply-type-btn secondary" href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank">Kiesopmaat →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="apply-right">
+
+        <div class="why-card reveal d1">
+          <div class="why-card-icon">🌍</div>
+          <h4>International Experience</h4>
+          <p>Study alongside students from across the globe in an English-taught, internationally oriented programme rooted in Amsterdam.</p>
+        </div>
+
+        <div class="why-card reveal d2">
+          <div class="why-card-icon">🚀</div>
+          <h4>Future-Proof Skills</h4>
+          <p>Graduate with hands-on experience in AI, XR, and Robotics — skills that are in high demand across every industry.</p>
+        </div>
+
+        <div class="why-card reveal d3">
+          <div class="why-card-icon">🏆</div>
+          <h4>Industry Recognition</h4>
+          <p>Work with real clients, attend industry events, and build a portfolio of projects that sets you apart in the job market.</p>
+        </div>
+
+        <div class="dates-box reveal d4">
+          <h4>Programme Dates</h4>
+          <div class="date-row">
+            <span class="date-label">Applications 2025–26</span>
+            <span class="date-val" style="color:var(--accent)">Closed</span>
+          </div>
+          <div class="date-row">
+            <span class="date-label">Applications 2026–27</span>
+            <span class="date-val" style="color:var(--accent)">Closed</span>
+          </div>
+          <div class="date-row">
+            <span class="date-label">Next Cohort Starts</span>
+            <span class="date-val">September 2026</span>
+          </div>
+          <div class="date-row">
+            <span class="date-label">Programme Ends</span>
+            <span class="date-val">January 2027</span>
+          </div>
+          <div class="date-row">
+            <span class="date-label">Location</span>
+            <span class="date-val">Pina Bauschplein 4, Amsterdam</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -1168,34 +1957,46 @@
       <div class="footer-brand">
         <div class="logo-wrap">
           <div class="footer-mark">ET</div>
-          <div class="name">Emerging Technologies Minor</div>
+          <div class="name">Emerging Tech Minor + Lab</div>
         </div>
         <p>International minor at Inholland University of Applied Sciences, Amsterdam. Research, education, and applied innovation in creative industries.</p>
+        <p style="margin-top:12px; font-size:12px; color:rgba(255,255,255,0.3);">Pina Bauschplein 4, 1095 PN Amsterdam</p>
+        <!-- Inholland logo — save your logo file as "inholland-logo.png" in the project root -->
+        <div class="inholland-footer-logo">
+          <img src="inholland-logo.png" alt="Inholland University of Applied Sciences" style="max-width:130px;display:block;" />
+        </div>
       </div>
       <div class="footer-links">
         <h5>Navigate</h5>
         <ul>
           <li><a href="#about">About the Minor</a></li>
-          <li><a href="#technologies">Technologies</a></li>
+          <li><a href="#activities">Activities</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#partners">Partners</a></li>
           <li><a href="#lab">The Lab</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#apply">Apply Now</a></li>
         </ul>
       </div>
       <div class="footer-links">
-        <h5>Links</h5>
+        <h5>Contact & Links</h5>
         <ul>
+          <li><a href="mailto:emergingtechminor@inholland.nl">emergingtechminor@inholland.nl</a></li>
           <li><a href="https://www.emergingtechminor.nl" target="_blank">emergingtechminor.nl</a></li>
           <li><a href="https://www.inholland.nl" target="_blank">inholland.nl</a></li>
           <li><a href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank">Apply via Kiesopmaat</a></li>
-          <li><a href="mailto:emergingtechminor@inholland.nl">emergingtechminor@inholland.nl</a></li>
+          <li><a href="https://instagram.com/emergingtechminorinholland" target="_blank">@emergingtechminorinholland</a></li>
+          <li><a href="https://www.tiktok.com/@emergingtechminor" target="_blank">@emergingtechminor (TikTok)</a></li>
+          <li><a href="https://inholland.us19.list-manage.com/subscribe?u=00c36a4ae41435874c5c634c8&id=c02c09343e" target="_blank">Subscribe to Newsletter</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Emerging Technologies Minor · Inholland University of Applied Sciences</p>
+      <p>© 2026 Emerging Tech Minor + Lab · Inholland University of Applied Sciences · Amsterdam</p>
       <div class="footer-socials">
         <a class="social-link" href="https://instagram.com/emergingtechminorinholland" target="_blank">Instagram</a>
         <a class="social-link" href="https://www.tiktok.com/@emergingtechminor" target="_blank">TikTok</a>
+        <a class="social-link" href="mailto:emergingtechminor@inholland.nl">Email</a>
       </div>
     </div>
   </div>
@@ -1395,6 +2196,33 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── NEWSLETTER HANDLER ────────────────────────────────────────
+function handleNewsletterSubmit(e, source) {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.querySelector('.newsletter-input').value;
+  const btn = form.querySelector('.newsletter-btn');
+  btn.textContent = '✓ Subscribed!';
+  btn.style.background = '#a1ffb2';
+  btn.style.color = '#252827';
+  form.querySelector('.newsletter-input').value = '';
+  setTimeout(() => {
+    btn.textContent = 'Subscribe';
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 3000);
+  console.log('Newsletter signup:', email, 'from:', source);
+  // TODO: connect to your email provider (Mailchimp, ConvertKit, etc.)
+}
+
+// Click outside to close modals
+['newsletter-modal','apply-modal'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', e => {
+    if (e.target === el) el.style.display = 'none';
   });
 });
 </script>
