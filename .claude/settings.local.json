@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"/c/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/3D Website Asset Generator-20260315T124902Z-1-001/3D Website Asset Generator/SKILL.md\" ~/.claude/plugins/marketplaces/local/plugins/scroll-stop-prompter/skills/scroll-stop-prompter/SKILL.md)",
+      "Bash(cp \"/c/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/3D Website Asset Generator-20260315T124902Z-1-001/3D Website Asset Generator/assets/prompt-page-template.html\" ~/.claude/plugins/marketplaces/local/plugins/scroll-stop-prompter/skills/scroll-stop-prompter/assets/prompt-page-template.html)",
+      "Bash(start \"\" \"/c/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/3D Website Asset Generator-20260315T124902Z-1-001/prompts.html\")",
+      "Bash(ffmpeg -version)",
+      "Bash(ffprobe \"C:/Users/Shant.Bayramian/OneDrive - Hogeschool Inholland/Downloads/hf_20260315_161836_a89906d9-94fb-4571-99fb-3aafd571e5c0.mp4\")",
+      "WebFetch(domain:www.emergingtechminor.nl)",
+      "WebSearch",
+      "WebFetch(domain:www.inholland.nl)",
+      "WebFetch(domain:www.kiesopmaat.nl)"
+    ]
+  }
+}

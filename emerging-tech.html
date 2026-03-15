@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emerging Technologies — Minor & Lab · Inholland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --background:   #f9f9f9;
+      --foreground:   #252827;
+      --card:         #ffffff;
+      --primary:      #3f8ef9;   /* electric blue */
+      --secondary:    #a1ffb2;   /* minty green   */
+      --accent:       #b4a7f4;   /* lilac         */
+      --tech-dark:    #252827;
+      --muted:        #64748b;
+      --muted-bg:     #f1f5f9;
+      --border:       #e2e8f0;
+      --radius:       0.75rem;
+
+      /* derived */
+      --primary-soft:   rgba(63,142,249,0.10);
+      --secondary-soft: rgba(161,255,178,0.35);
+      --accent-soft:    rgba(180,167,244,0.20);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--background);
+      color: var(--foreground);
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LOADER ─────────────────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--foreground);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-ring {
+      width: 48px; height: 48px;
+      border: 2.5px solid rgba(255,255,255,0.15);
+      border-top-color: var(--secondary);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+    .loader-text {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── NAVBAR ─────────────────────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.35s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(249,249,249,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 48px;
+      box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--foreground);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 900; color: var(--secondary);
+      letter-spacing: -0.05em; flex-shrink: 0;
+    }
+    .nav-logo-text {
+      font-size: 14px; font-weight: 700;
+      color: var(--foreground); letter-spacing: -0.02em;
+    }
+    .nav-logo-text span { color: var(--primary); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-cta {
+      font-size: 13px; font-weight: 600;
+      color: #fff; background: var(--primary);
+      padding: 8px 20px; border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(63,142,249,0.35);
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO SCROLL SECTION ────────────────────────────────── */
+    #hero-scroll {
+      position: relative;
+      height: 500vh;
+      z-index: 1;
+    }
+    #hero-sticky {
+      position: sticky; top: 0;
+      height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--foreground); /* dark backdrop while video loads */
+    }
+
+    /* Video fills the container */
+    /* video is hidden — only used for frame extraction */
+    #main-video { display: none; }
+
+    #video-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      transform: translateZ(0);
+    }
+    #video-canvas.ready { opacity: 1; }
+    #main-video.ready { opacity: 1; }
+
+    /* dark scrim so text reads over video */
+    .hero-scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(37,40,39,0.50) 0%,
+        rgba(37,40,39,0.20) 45%,
+        rgba(37,40,39,0.60) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* intro text */
+    #hero-intro {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--secondary);
+      background: rgba(161,255,178,0.12);
+      border: 1px solid rgba(161,255,178,0.3);
+      padding: 6px 16px; border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    #hero-intro h1 {
+      font-size: clamp(52px, 11vw, 120px);
+      font-weight: 900; line-height: 0.9;
+      letter-spacing: -0.04em; color: #fff;
+    }
+    #hero-intro h1 .outline {
+      -webkit-text-stroke: 2px rgba(255,255,255,0.35);
+      color: transparent;
+    }
+    .hero-scroll-hint {
+      margin-top: 52px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px; border-right: 1.5px solid;
+      border-bottom: 1.5px solid; border-color: rgba(255,255,255,0.35);
+      transform: rotate(45deg);
+      animation: arrowBounce 1.8s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.4; }
+      50%       { transform: rotate(45deg) translateY(5px); opacity: 1; }
+    }
+
+    /* annotation cards */
+    .annotation {
+      position: absolute; z-index: 3;
+      width: 280px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+    .annotation.visible { opacity: 1; transform: translateY(0); }
+    .ann-tag {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .annotation h3 {
+      font-size: 18px; font-weight: 700;
+      color: #fff; margin-bottom: 6px; line-height: 1.2;
+    }
+    .annotation p {
+      font-size: 12px; line-height: 1.6;
+      color: rgba(255,255,255,0.65);
+    }
+    .ann-dot {
+      display: inline-block; width: 7px; height: 7px;
+      border-radius: 50%; margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* positions */
+    #ann-1 { bottom: 28%; left:  5%; }
+    #ann-2 { top:    18%; right: 5%; }
+    #ann-3 { bottom: 22%; right: 5%; }
+    #ann-4 { top:    18%; left:  5%; }
+
+    /* ── SHARED SECTION STYLES ──────────────────────────────── */
+    section { position: relative; z-index: 2; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.03em; color: var(--foreground);
+      margin-bottom: 20px;
+    }
+    .section-title .accent { color: var(--primary); }
+    .section-sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--muted); max-width: 520px;
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────────── */
+    #about {
+      padding: 120px 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .about-left p {
+      font-size: 17px; line-height: 1.75;
+      color: #444; margin-bottom: 18px;
+    }
+    .about-left strong { color: var(--foreground); font-weight: 700; }
+    .quote-card {
+      margin-top: 36px;
+      background: var(--foreground);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      position: relative;
+    }
+    .quote-card::before {
+      content: '"';
+      position: absolute; top: 16px; left: 24px;
+      font-size: 48px; line-height: 1;
+      color: var(--secondary); font-weight: 900;
+      opacity: 0.6;
+    }
+    .quote-card p {
+      font-size: 16px; font-style: italic;
+      color: rgba(255,255,255,0.85); line-height: 1.65;
+      margin-bottom: 12px; padding-top: 20px;
+    }
+    .quote-card cite {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--secondary);
+    }
+    .about-right { display: flex; flex-direction: column; gap: 14px; }
+    .fact-row {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex; align-items: flex-start; gap: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .fact-row:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px rgba(63,142,249,0.10);
+    }
+    .fact-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .fact-icon.blue   { background: var(--primary-soft); }
+    .fact-icon.green  { background: var(--secondary-soft); }
+    .fact-icon.purple { background: var(--accent-soft); }
+    .fact-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .fact-body p  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ── TECHNOLOGIES ───────────────────────────────────────── */
+    #technologies {
+      padding: 120px 0;
+      background: var(--background);
+    }
+    .tech-header { margin-bottom: 60px; }
+    .tech-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .tech-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.3);
+      padding: 32px 24px 28px;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+      cursor: default;
+    }
+    .tech-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+      transform: translateY(-4px);
+    }
+    .tech-card:hover.blue   { border-color: rgba(63,142,249,0.4); }
+    .tech-card:hover.green  { border-color: rgba(161,255,178,0.5); }
+    .tech-card:hover.purple { border-color: rgba(180,167,244,0.4); }
+    .tech-card:hover.orange { border-color: rgba(249,165,63,0.4); }
+
+    .tech-num {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .tech-emoji { font-size: 32px; margin-bottom: 18px; display: block; }
+    .tech-card h3 {
+      font-size: 20px; font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .tech-card p {
+      font-size: 13px; color: var(--muted); line-height: 1.65;
+    }
+    .tech-pills {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px;
+    }
+    .tech-pill {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .pill-blue   { color: var(--primary);    background: var(--primary-soft); }
+    .pill-green  { color: #1d8a38;           background: var(--secondary-soft); }
+    .pill-purple { color: #6b5dcd;           background: var(--accent-soft); }
+    .pill-orange { color: #c25a0a;           background: rgba(249,165,63,0.12); }
+
+    /* color coding tech card accents */
+    .tc-blue   .tech-num { color: var(--primary); }
+    .tc-green  .tech-num { color: #1d8a38; }
+    .tc-purple .tech-num { color: #6b5dcd; }
+    .tc-orange .tech-num { color: #c25a0a; }
+
+    /* ── STATS ──────────────────────────────────────────────── */
+    #stats {
+      padding: 88px 0;
+      background: var(--foreground);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border-radius: 0;
+    }
+    .stat-item {
+      text-align: center; padding: 0 20px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: clamp(44px, 6vw, 64px);
+      font-weight: 900; line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .stat-num.blue   { color: var(--primary); }
+    .stat-num.green  { color: var(--secondary); }
+    .stat-num.purple { color: var(--accent); }
+    .stat-num.white  { color: #fff; }
+    .stat-label {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-top: 8px;
+    }
+
+    /* ── THE LAB ────────────────────────────────────────────── */
+    #lab {
+      padding: 120px 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .lab-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start; margin-top: 64px;
+    }
+    .lab-text p {
+      font-size: 16px; line-height: 1.8; color: #444;
+      margin-bottom: 16px;
+    }
+    .lab-text strong { color: var(--foreground); }
+    .equipment {
+      list-style: none; margin-top: 28px;
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .equipment li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: #555;
+    }
+    .equipment li::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary); flex-shrink: 0;
+    }
+    .memberships {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px;
+    }
+    .membership {
+      font-size: 12px; font-weight: 500;
+      color: var(--foreground);
+      background: var(--muted-bg); border: 1px solid var(--border);
+      padding: 5px 14px; border-radius: 999px;
+    }
+    .lab-cards { display: flex; flex-direction: column; gap: 12px; }
+    .lab-card {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: border-color 0.2s;
+    }
+    .lab-card:hover { border-color: var(--primary); }
+    .lab-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+    .lab-card p  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ── PROJECTS ───────────────────────────────────────────── */
+    #projects {
+      padding: 120px 0;
+      background: var(--background);
+    }
+    .proj-header { margin-bottom: 48px; }
+
+    /* tabs */
+    .tab-bar {
+      display: flex; gap: 4px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 4px; width: fit-content;
+      flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .tab-btn {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); background: transparent;
+      border: none; cursor: pointer;
+      padding: 9px 18px; border-radius: 7px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--foreground);
+      color: #fff;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* project cards grid */
+    .pcard-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .pcard {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.2);
+      padding: 26px 22px;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+    }
+    .pcard:hover {
+      box-shadow: 0 6px 28px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+      border-color: rgba(63,142,249,0.3);
+    }
+    .pcard-type {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 10px;
+    }
+    .pcard h4 {
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .pcard p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .coming-soon {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); background: var(--muted-bg);
+      border: 1px dashed var(--border);
+      padding: 4px 12px; border-radius: 999px; margin-top: 14px;
+    }
+    .coming-soon::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--muted);
+    }
+
+    /* conference list */
+    .conf-list { display: flex; flex-direction: column; gap: 12px; max-width: 680px; }
+    .conf-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .conf-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(180,167,244,0.15);
+    }
+    .conf-n {
+      font-size: 28px; font-weight: 900;
+      letter-spacing: -0.05em; color: var(--accent);
+      min-width: 36px; line-height: 1;
+    }
+    .conf-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .conf-item p  { font-size: 13px; color: var(--muted); }
+
+    /* aftermovie placeholder */
+    .aftermovie-box {
+      margin-top: 36px;
+      border: 2px dashed var(--border);
+      border-radius: calc(var(--radius) * 1.5);
+      height: 280px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: var(--muted); text-align: center;
+      background: var(--card);
+      transition: border-color 0.2s;
+    }
+    .aftermovie-box:hover { border-color: var(--primary); }
+    .aftermovie-box .icon { font-size: 36px; }
+    .aftermovie-box strong { font-size: 14px; font-weight: 700; color: var(--foreground); }
+    .aftermovie-box p { font-size: 13px; max-width: 280px; line-height: 1.6; }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--foreground);
+      padding: 64px 0 40px;
+      position: relative; z-index: 2;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 60px; margin-bottom: 48px;
+    }
+    .footer-brand .logo-wrap {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .footer-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 900; color: var(--foreground);
+    }
+    .footer-brand .name {
+      font-size: 15px; font-weight: 800;
+      color: #fff; letter-spacing: -0.02em;
+    }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.65; }
+    .footer-links h5 {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 16px;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: 14px; color: rgba(255,255,255,0.6);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-socials { display: flex; gap: 12px; }
+    .social-link {
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.45); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .social-link:hover { color: var(--secondary); }
+
+    /* ── SCROLL REVEAL ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.10s; }
+    .d2 { transition-delay: 0.20s; }
+    .d3 { transition-delay: 0.30s; }
+    .d4 { transition-delay: 0.40s; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .container { padding: 0 24px; }
+      #navbar, #navbar.scrolled { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .about-inner, .lab-grid { grid-template-columns: 1fr; gap: 48px; }
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .stat-item { border-right: none; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .stat-item:nth-child(3), .stat-item:nth-child(4) { border-bottom: none; }
+      .pcard-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
+      #ann-2, #ann-3, #ann-4 { display: none; }
+      #ann-1 { bottom: 10%; left: 5%; right: 5%; width: auto; max-width: none; }
+    }
+    @media (max-width: 600px) {
+      .tech-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      #hero-intro h1 { font-size: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-text" id="loader-text">Loading</div>
+  <div id="loader-bar-wrap" style="width:200px;height:2px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;display:none;">
+    <div id="loader-bar" style="height:100%;width:0%;background:var(--secondary);border-radius:999px;transition:width 0.1s linear;"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">ET</div>
+    <div class="nav-logo-text">Emerging <span>Tech</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#technologies">Technologies</a></li>
+    <li><a href="#lab">The Lab</a></li>
+    <li><a href="#projects">Projects</a></li>
+  </ul>
+  <a class="nav-cta" href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank">Apply Now</a>
+</nav>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- HERO — SCROLL-DRIVEN VIDEO                                  -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="hero-scroll">
+  <div id="hero-sticky">
+
+    <video
+      id="main-video"
+      src="../hf_20260315_174327_6838abdf-1753-4545-9886-001d8f912e7f (1).mp4"
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+
+    <!-- Canvas replaces the video for display after frame extraction -->
+    <canvas id="video-canvas"></canvas>
+
+    <div class="hero-scrim"></div>
+
+    <div id="hero-intro">
+      <div class="hero-badge">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--secondary);display:inline-block;"></span>
+        Inholland University · Amsterdam
+      </div>
+      <h1>EMERGING<br /><span class="outline">TECH</span></h1>
+      <div class="hero-scroll-hint">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </div>
+
+    <!-- Annotation cards — appear at specific scroll progress -->
+    <div class="annotation" id="ann-1">
+      <div class="ann-tag">
+        <span class="ann-dot" style="background:var(--primary)"></span>01 · Intelligence
+      </div>
+      <h3>Artificial Intelligence</h3>
+      <p>Generative AI, machine learning, and intelligent systems — applied to creative and business contexts.</p>
+    </div>
+    <div class="annotation" id="ann-2">
+      <div class="ann-tag">
+        <span class="ann-dot" style="background:var(--secondary)"></span>02 · Immersion
+      </div>
+      <h3>Extended Reality</h3>
+      <p>Design immersive experiences across VR, AR, and MR with industry-grade tools in the Sluislab.</p>
+    </div>
+    <div class="annotation" id="ann-3">
+      <div class="ann-tag">
+        <span class="ann-dot" style="background:var(--accent)"></span>03 · Automation
+      </div>
+      <h3>Robotics</h3>
+      <p>Program intelligent robots for social, agricultural, and creative applications.</p>
+    </div>
+    <div class="annotation" id="ann-4">
+      <div class="ann-tag">
+        <span class="ann-dot" style="background:#f9a53f"></span>04 · Trust
+      </div>
+      <h3>Blockchain</h3>
+      <p>Rethink ownership and value exchange with decentralised systems for the creative economy.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- ABOUT                                                        -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-inner">
+
+      <div class="about-left reveal">
+        <p class="section-label">What We Do</p>
+        <h2 class="section-title">A Lab<br />for the <span class="accent">Future</span></h2>
+        <p>The <strong>Emerging Technologies Minor</strong> at Inholland is an international programme for curious minds from all study backgrounds — no technical experience required.</p>
+        <p>We explore how technologies like AI, XR, Blockchain, Robotics and IoT are reshaping the world — and how to apply them in <strong>creative, social and business contexts</strong>.</p>
+        <p>The Lab drives applied research alongside education, producing knowledge that feeds directly back into industry and teaching practice.</p>
+        <div class="quote-card">
+          <p>"We want students to become resilient for the future. The minor aligns with digital literacy and lifelong learning principles."</p>
+          <cite>— Shant Bayramian, Co-founder</cite>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <div class="fact-row reveal d1">
+          <div class="fact-icon blue">🎓</div>
+          <div class="fact-body">
+            <h4>30 EC · Full-Time Minor</h4>
+            <p>English-taught, semester-long. Open to all Inholland students and international partner university students.</p>
+          </div>
+        </div>
+        <div class="fact-row reveal d2">
+          <div class="fact-icon green">🏭</div>
+          <div class="fact-body">
+            <h4>1/3 Industry Challenge</h4>
+            <p>Real assignments for heritage organisations, health services, museums, and financial institutions.</p>
+          </div>
+        </div>
+        <div class="fact-row reveal d3">
+          <div class="fact-icon purple">🔬</div>
+          <div class="fact-body">
+            <h4>Applied Research</h4>
+            <p>The Lab conducts research in creative industries — publishing insights and experiments with industry partners.</p>
+          </div>
+        </div>
+        <div class="fact-row reveal d4">
+          <div class="fact-icon blue">🌍</div>
+          <div class="fact-body">
+            <h4>(Inter)national Field Trips</h4>
+            <p>Immersive visits to innovation hubs, tech labs, and creative studios across borders. Connect with global experts.</p>
+          </div>
+        </div>
+        <div class="fact-row reveal">
+          <div class="fact-icon green">🧭</div>
+          <div class="fact-body">
+            <h4>Technological Sovereignty</h4>
+            <p>Students learn to consciously decide whether and how to adopt technology — not just follow the hype.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- TECHNOLOGIES                                                 -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="technologies">
+  <div class="container">
+    <div class="tech-header">
+      <p class="section-label reveal">Core Technologies</p>
+      <h2 class="section-title reveal">Four Forces<br /><span class="accent">Shaping Tomorrow</span></h2>
+    </div>
+    <div class="tech-grid">
+
+      <div class="tech-card tc-blue reveal">
+        <div class="tech-num">01</div>
+        <span class="tech-emoji">🧠</span>
+        <h3>Artificial Intelligence</h3>
+        <p>From generative models to real-world AI deployment — understand how intelligent systems reshape creative practice.</p>
+        <div class="tech-pills">
+          <span class="tech-pill pill-blue">Generative AI</span>
+          <span class="tech-pill pill-blue">LLMs</span>
+          <span class="tech-pill pill-blue">Computer Vision</span>
+        </div>
+      </div>
+
+      <div class="tech-card tc-green reveal d1">
+        <div class="tech-num">02</div>
+        <span class="tech-emoji">🥽</span>
+        <h3>Extended Reality</h3>
+        <p>Design and prototype in VR, AR, and mixed reality using Unreal Engine and the Sluislab XR hardware suite.</p>
+        <div class="tech-pills">
+          <span class="tech-pill pill-green">VR / AR</span>
+          <span class="tech-pill pill-green">Unreal Engine</span>
+          <span class="tech-pill pill-green">Spatial Design</span>
+        </div>
+      </div>
+
+      <div class="tech-card tc-purple reveal d2">
+        <div class="tech-num">03</div>
+        <span class="tech-emoji">🤖</span>
+        <h3>Robotics & IoT</h3>
+        <p>Build and deploy robots that act in the real world — social robots in care, smart farming, and interactive installations.</p>
+        <div class="tech-pills">
+          <span class="tech-pill pill-purple">Social Robots</span>
+          <span class="tech-pill pill-purple">IoT</span>
+          <span class="tech-pill pill-purple">Raspberry Pi</span>
+        </div>
+      </div>
+
+      <div class="tech-card tc-orange reveal d3">
+        <div class="tech-num">04</div>
+        <span class="tech-emoji">🔗</span>
+        <h3>Blockchain & Web3</h3>
+        <p>Explore decentralised infrastructure, digital ownership, and what trustless systems mean for creative business.</p>
+        <div class="tech-pills">
+          <span class="tech-pill pill-orange">Web3</span>
+          <span class="tech-pill pill-orange">Smart Contracts</span>
+          <span class="tech-pill pill-orange">Decentralisation</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- STATS                                                        -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-num blue" data-target="30">0</div>
+        <div class="stat-label">EC Credits</div>
+      </div>
+      <div class="stat-item reveal d1">
+        <div class="stat-num green" data-target="4">0</div>
+        <div class="stat-label">Core Technologies</div>
+      </div>
+      <div class="stat-item reveal d2">
+        <div class="stat-num purple" data-target="33" data-suffix="%">0%</div>
+        <div class="stat-label">Industry Challenge</div>
+      </div>
+      <div class="stat-item reveal d3">
+        <div class="stat-num white" data-target="100" data-suffix="%">0%</div>
+        <div class="stat-label">Hands-On Learning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- THE LAB                                                      -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="lab">
+  <div class="container">
+    <p class="section-label reveal">Infrastructure</p>
+    <h2 class="section-title reveal">The Lab</h2>
+    <div class="lab-grid">
+
+      <div class="lab-text reveal">
+        <p>The <strong>Emerging Tech Lab</strong> is a research and education hub embedded in the Inholland Sluislab ecosystem in Amsterdam's Sluisbuurt neighbourhood — connecting students directly with community and industry.</p>
+        <p>Beyond education, the Lab runs <strong>applied research</strong> in creative industries, contributing to the national knowledge infrastructure and publishing actionable insights for practitioners.</p>
+        <ul class="equipment">
+          <li>High-end workstations with GPU compute for AI & generative models</li>
+          <li>VR headsets and full motion capture suite</li>
+          <li>Robotics kits, robotic arms, and Raspberry Pi systems</li>
+          <li>3D printers and rapid prototyping hardware</li>
+          <li>Unreal Engine & real-time rendering pipelines</li>
+          <li>Industry-licensed software ecosystem</li>
+        </ul>
+        <div class="memberships">
+          <span class="membership">Amsterdam Immersive Alliance</span>
+          <span class="membership">CoE CI Network</span>
+          <span class="membership">IX Labs</span>
+          <span class="membership">ARC Research Center</span>
+        </div>
+      </div>
+
+      <div class="lab-cards reveal d1">
+        <div class="lab-card">
+          <h4>🏗️ Sluislab Amsterdam</h4>
+          <p>Our primary base — a living lab in a developing Amsterdam neighbourhood, co-creating with residents and industry.</p>
+        </div>
+        <div class="lab-card">
+          <h4>🥽 IMI Lab</h4>
+          <p>Interactive Media & Immersion lab for XR prototyping, game design, and immersive narrative production.</p>
+        </div>
+        <div class="lab-card">
+          <h4>🌱 Sustainable Media Lab</h4>
+          <p>Explores responsible media production and the environmental footprint of creative technology.</p>
+        </div>
+        <div class="lab-card">
+          <h4>🏙️ Urban Leisure & Tourism Lab</h4>
+          <p>Technology applications in hospitality, tourism, and urban experience design across Amsterdam & Rotterdam.</p>
+        </div>
+        <div class="lab-card">
+          <h4>📚 ARC Research Center</h4>
+          <p>Applied Research × Creativity — practice-based research offering new perspectives on creative industries.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- PROJECTS                                                     -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <div class="proj-header">
+      <p class="section-label reveal">Our Work</p>
+      <h2 class="section-title reveal">Projects &amp;<br /><span class="accent">Initiatives</span></h2>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="research">Research</button>
+      <button class="tab-btn" data-tab="education">Education</button>
+      <button class="tab-btn" data-tab="student">Student Showcase</button>
+      <button class="tab-btn" data-tab="conferences">Conferences</button>
+    </div>
+
+    <!-- RESEARCH -->
+    <div class="tab-pane active" id="tab-research">
+      <div class="pcard-grid">
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Research · Archive</div>
+          <h4>Dutch Graffiti Library Project</h4>
+          <p>Documenting and archiving Dutch graffiti culture using digital tools and emerging technology for preservation and public access.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Research · CoE CI</div>
+          <h4>CoE CI Project</h4>
+          <p>Centre of Expertise Creative Industries research — exploring how technology can serve creative professionals. Includes previous year's work and Pawan's ongoing research.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2">
+          <div class="pcard-type">Research · Education</div>
+          <h4>KERN Project</h4>
+          <p>Developing core competencies and curriculum frameworks for technology-driven creative education programmes in the Netherlands.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Research · Partnership</div>
+          <h4>Associated Partner</h4>
+          <p>Active participation in associated partner networks, contributing expertise and research capacity to collaborative projects across institutions.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="tab-pane" id="tab-education">
+      <div class="pcard-grid">
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Education · Accreditation</div>
+          <h4>Accreditation — TM &amp; CB</h4>
+          <p>Supporting accreditation for Tourism Management and Creative Business programmes, integrating emerging tech competencies into formal curriculum frameworks.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Education · Programme</div>
+          <h4>Production Lab Week — CB</h4>
+          <p>An intensive production lab week in the Creative Business programme, giving students sprint-format hands-on experience with emerging technology.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2">
+          <div class="pcard-type">Education · International</div>
+          <h4>Denmark Hackathon</h4>
+          <p>International hackathon collaboration with Danish institutions — cross-border innovation sprints for creative tech students.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Education · Competition</div>
+          <h4>Emerging Tech Olympiad</h4>
+          <p>National competition where students demonstrate technological skills and creative problem-solving at scale.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Education · Industry Event</div>
+          <h4>Immersive Tech Week</h4>
+          <p>Annual participation in Amsterdam's leading XR industry event — connecting students with professionals and cutting-edge immersive work.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2">
+          <div class="pcard-type">Education · Event</div>
+          <h4>Digiquest</h4>
+          <p>Organisation and strategic development of Digiquest — a national showcase and challenge platform for digital creativity and emerging tech.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Education · Institutional</div>
+          <h4>AI-Ready Faculty Support</h4>
+          <p>Supporting the Inholland Centre for Teaching &amp; Learning and AI-Ready team in the Faculty of Creative Business — embedding AI literacy institution-wide.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Education · Funding</div>
+          <h4>Open Learning Materials</h4>
+          <p>Subsidies obtained from Student Participation Funds, Student Initiative Funds, and Subsidies for Open Learning Materials to develop open-access educational resources.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2">
+          <div class="pcard-type">Education · Industry</div>
+          <h4>Digital Humans for Smart Concepts</h4>
+          <p>Exploring AI-driven digital human avatars in smart business concepts — combining XR and creative strategy for next-gen brand and service experiences.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STUDENT SHOWCASE -->
+    <div class="tab-pane" id="tab-student">
+      <div class="pcard-grid">
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Student Project · AI + XR</div>
+          <h4>OBA Next — Library of the Future</h4>
+          <p>Students partnered with OBA Next to explore how AI and XR can transform the Amsterdam library into an immersive, intelligent learning environment.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Student Project · AI</div>
+          <h4>AI Book Club</h4>
+          <p>An interactive literary experience where AI visualises participants' mental images of story characters, sparking discussion about differing interpretations.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2">
+          <div class="pcard-type">Student Project · Platform</div>
+          <h4>Digital Reservation Platform</h4>
+          <p>A smart, autonomous booking and information platform for the OBA Next Lab — facilitating community access and idea exchange without staff intervention.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pcard-type">Student Project · Robotics</div>
+          <h4>Social Robots in Care</h4>
+          <p>Deploying social robots in care and wellbeing settings — exploring how robots can meaningfully support human connection and daily routines.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d1">
+          <div class="pcard-type">Student Project · IoT</div>
+          <h4>Smart Farming</h4>
+          <p>Precision agriculture using IoT sensors, robotics, and data visualisation to create intelligent growing environments for sustainable food production.</p>
+          <span class="coming-soon">More info coming soon</span>
+        </div>
+
+        <div class="pcard reveal d2" style="border-color: rgba(63,142,249,0.3);">
+          <div class="pcard-type" style="color:var(--accent)">Student Project · 2026–27</div>
+          <h4>Next Cohort</h4>
+          <p>The next generation of Emerging Tech students is forming now. Their projects will live here — AI prototypes, XR experiences, blockchain experiments, and more.</p>
+          <span class="coming-soon" style="color:var(--primary);border-color:rgba(63,142,249,0.3)">Applications open</span>
+        </div>
+
+      </div>
+
+      <div class="aftermovie-box reveal">
+        <div class="icon">🎬</div>
+        <strong>Aftermovie</strong>
+        <p>The year's aftermovie will be embedded here — a visual record of student work, lab sessions, events, and outcomes from the inaugural cohort.</p>
+        <span class="coming-soon">Video coming soon</span>
+      </div>
+    </div>
+
+    <!-- CONFERENCES -->
+    <div class="tab-pane" id="tab-conferences">
+      <div class="conf-list">
+
+        <div class="conf-item reveal">
+          <div class="conf-n">01</div>
+          <div>
+            <h4>XR Day at SURF</h4>
+            <p>Presenting research and student work at SURF's XR Day — the national platform for extended reality in Dutch higher education.</p>
+            <span class="coming-soon">More info coming soon</span>
+          </div>
+        </div>
+
+        <div class="conf-item reveal d1">
+          <div class="conf-n">02</div>
+          <div>
+            <h4>EMMA</h4>
+            <p>Sharing insights on emerging technology education in the creative industries context at EMMA.</p>
+            <span class="coming-soon">More info coming soon</span>
+          </div>
+        </div>
+
+        <div class="conf-item reveal d2">
+          <div class="conf-n">03</div>
+          <div>
+            <h4>XR Metaverse Conference</h4>
+            <p>Representing Inholland's Emerging Tech Lab — contributing to national and international conversations on immersive futures.</p>
+            <span class="coming-soon">More info coming soon</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- FOOTER                                                       -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-wrap">
+          <div class="footer-mark">ET</div>
+          <div class="name">Emerging Technologies Minor</div>
+        </div>
+        <p>International minor at Inholland University of Applied Sciences, Amsterdam. Research, education, and applied innovation in creative industries.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="#about">About the Minor</a></li>
+          <li><a href="#technologies">Technologies</a></li>
+          <li><a href="#lab">The Lab</a></li>
+          <li><a href="#projects">Projects</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Links</h5>
+        <ul>
+          <li><a href="https://www.emergingtechminor.nl" target="_blank">emergingtechminor.nl</a></li>
+          <li><a href="https://www.inholland.nl" target="_blank">inholland.nl</a></li>
+          <li><a href="https://www.kiesopmaat.nl/modules/Inholland/CRB/144186/" target="_blank">Apply via Kiesopmaat</a></li>
+          <li><a href="mailto:emergingtechminor@inholland.nl">emergingtechminor@inholland.nl</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Emerging Technologies Minor · Inholland University of Applied Sciences</p>
+      <div class="footer-socials">
+        <a class="social-link" href="https://instagram.com/emergingtechminorinholland" target="_blank">Instagram</a>
+        <a class="social-link" href="https://www.tiktok.com/@emergingtechminor" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── ELEMENTS ──────────────────────────────────────────────────
+const loader      = document.getElementById('loader');
+const loaderText  = document.getElementById('loader-text');
+const loaderBarWrap = document.getElementById('loader-bar-wrap');
+const loaderBar   = document.getElementById('loader-bar');
+const video       = document.getElementById('main-video');
+const canvas      = document.getElementById('video-canvas');
+const ctx         = canvas.getContext('2d');
+const heroScroll  = document.getElementById('hero-scroll');
+const heroIntro   = document.getElementById('hero-intro');
+
+const annotations = [
+  { el: document.getElementById('ann-1'), start: 0.12, end: 0.35 },
+  { el: document.getElementById('ann-2'), start: 0.30, end: 0.55 },
+  { el: document.getElementById('ann-3'), start: 0.52, end: 0.75 },
+  { el: document.getElementById('ann-4'), start: 0.72, end: 0.96 },
+];
+
+// ── FRAME STORE ───────────────────────────────────────────────
+let frames = [];          // array of ImageBitmap
+let framesReady = false;
+let scrollProgress = 0;
+
+// ── SIZE CANVAS TO FILL VIEWPORT ──────────────────────────────
+function sizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  if (framesReady) drawFrame(scrollProgress); // redraw on resize
+}
+sizeCanvas();
+window.addEventListener('resize', sizeCanvas);
+
+// ── DRAW A SINGLE FRAME (instant — GPU texture swap) ──────────
+function drawFrame(progress) {
+  if (!framesReady || frames.length === 0) return;
+  const i = Math.min(Math.floor(progress * frames.length), frames.length - 1);
+
+  // Cover-fit: maintain aspect ratio and fill the canvas
+  const bmp = frames[i];
+  const scale = Math.max(canvas.width / bmp.width, canvas.height / bmp.height);
+  const w = bmp.width  * scale;
+  const h = bmp.height * scale;
+  const x = (canvas.width  - w) / 2;
+  const y = (canvas.height - h) / 2;
+  ctx.drawImage(bmp, x, y, w, h);
+}
+
+// ── FRAME EXTRACTION ──────────────────────────────────────────
+// Seeks the hidden <video> to every frame, captures to ImageBitmap.
+// After extraction, scrolling is a pure synchronous canvas draw.
+
+const CAPTURE_FPS = 24;   // frames per second to capture
+const MAX_FRAMES  = 300;  // hard cap to keep memory reasonable
+
+// Offscreen capture canvas — sized to video native resolution
+const cap    = document.createElement('canvas');
+const capCtx = cap.getContext('2d');
+
+function seekTo(time) {
+  return new Promise(resolve => {
+    const onSeeked = () => { video.removeEventListener('seeked', onSeeked); resolve(); };
+    video.addEventListener('seeked', onSeeked);
+    video.currentTime = time;
+  });
+}
+
+async function extractFrames() {
+  const duration   = video.duration;
+  const totalCount = Math.min(Math.ceil(duration * CAPTURE_FPS), MAX_FRAMES);
+
+  cap.width  = video.videoWidth  || 1280;
+  cap.height = video.videoHeight || 720;
+
+  // Show progress bar
+  loaderBarWrap.style.display = 'block';
+
+  for (let i = 0; i < totalCount; i++) {
+    const t = (i / (totalCount - 1)) * duration;
+    await seekTo(t);
+
+    capCtx.drawImage(video, 0, 0, cap.width, cap.height);
+    const bmp = await createImageBitmap(cap);
+    frames.push(bmp);
+
+    // Update progress UI
+    const pct = Math.round((i + 1) / totalCount * 100);
+    loaderBar.style.width = pct + '%';
+    loaderText.textContent = `Preparing experience… ${pct}%`;
+  }
+
+  framesReady = true;
+  drawFrame(0);
+  canvas.classList.add('ready');
+  loader.classList.add('hidden');
+}
+
+// ── KICK OFF EXTRACTION ONCE VIDEO IS READY ───────────────────
+function onMetadata() {
+  extractFrames().catch(err => {
+    // Extraction failed (e.g. CORS, codec) — fall back to direct video
+    console.warn('Frame extraction failed, falling back:', err);
+    loader.classList.add('hidden');
+  });
+}
+
+video.addEventListener('loadedmetadata', onMetadata);
+if (video.readyState >= 1) onMetadata();
+
+// Fallback: if video never loads (wrong path etc.), hide loader after 8s
+setTimeout(() => { if (!framesReady) loader.classList.add('hidden'); }, 8000);
+
+// ── SCROLL HANDLER ────────────────────────────────────────────
+function onScroll() {
+  const scrollable = heroScroll.offsetHeight - window.innerHeight;
+  scrollProgress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+
+  drawFrame(scrollProgress);  // synchronous — no lag
+
+  heroIntro.style.opacity = Math.max(0, 1 - scrollProgress * 5).toString();
+
+  for (const ann of annotations) {
+    ann.el.classList.toggle('visible',
+      scrollProgress >= ann.start && scrollProgress <= ann.end);
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ── NAVBAR ────────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+function updateNav() {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── COUNT-UP ──────────────────────────────────────────────────
+function countUp(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const start  = performance.now();
+  const dur    = 1200;
+  (function frame(now) {
+    const ease = 1 - Math.pow(1 - Math.min((now - start) / dur, 1), 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (ease < 1) requestAnimationFrame(frame);
+  })(start);
+}
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObs.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => countObs.observe(el));
+
+// ── TABS ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

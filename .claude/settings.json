@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://www.emergingtechminor.nl/\")",
+      "Bash(curl -s \"https://www.emergingtechminor.nl/assets/index-7_ruuFJ9.css\")",
+      "Bash(grep -oP '\\(#[0-9a-fA-F]{3,8}|rgb[^\\)]+\\\\\\)|hsl[^\\)]+\\\\\\)|font-family:[^;]+|--[a-z][^:]+:[^;}]+\\)')",
+      "Bash(curl -s \"https://www.emergingtechminor.nl/assets/index-BjeKazEQ.js\")",
+      "Bash(grep -o 'background[^,;{]*')",
+      "Bash(grep -oE 'className=\"\"\"\"[^\"\"\"\"]{0,200}\"\"\"\"')"
+    ]
+  }
+}
