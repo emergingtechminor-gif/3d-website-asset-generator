@@ -989,6 +989,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 22px; font-weight: 800; color: #fff;
       margin: 0 auto 18px; letter-spacing: -0.02em;
+      object-fit: cover;
     }
     .team-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
     .team-role { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; display: block; }
@@ -1125,7 +1126,7 @@
       #navbar, #navbar.scrolled { padding: 14px 24px; }
       .nav-links { display: none; }
       .about-inner, .lab-grid, .apply-inner, .testimonials-grid { grid-template-columns: 1fr; gap: 48px; }
-      .tech-grid { grid-template-columns: 1fr 1fr; }
+      .tech-grid, .team-grid, .partners-grid { grid-template-columns: 1fr 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
       .stat-item { border-right: none; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
       .stat-item:nth-child(3), .stat-item:nth-child(4) { border-bottom: none; }
@@ -1137,11 +1138,13 @@
       .activities-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
+      .container { padding: 0 20px; }
       .tech-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
-      #hero-intro h1 { font-size: 52px; }
+      #hero-intro h1 { font-size: 42px; }
       .program-grid, .activities-grid { grid-template-columns: 1fr; }
-      .nav-logo-text { font-size: 11px; }
+      .nav-logo-text { font-size: 10px; }
+      .team-grid, .partners-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -1521,14 +1524,14 @@
         <div class="fact-icon blue">🔬</div>
         <div class="fact-body">
           <h4>Strategic Research</h4>
-          <p>Aiding research centres in utilizing XR and Gen-AI as a research method, tool, and object of research — fostering experimentation that is informed by research and manifested through practice.</p>
+          <p>Aiding research centres in utilizing emerging tech as a research method, tool, and object of research — fostering experimentation that is informed by research and manifested through practice.</p>
         </div>
       </div>
       <div class="fact-row" style="margin-top:12px;">
         <div class="fact-icon green">🎓</div>
         <div class="fact-body">
           <h4>Educational Innovation</h4>
-          <p>Educating staff on integrating XR and Gen-AI as pedagogical tools to enhance student learning trajectories, and supporting the creation of content for creative and business-related ends.</p>
+          <p>Educating staff on integrating emerging tech as pedagogical tools to enhance student learning trajectories, and supporting the creation of content for creative and business-related ends.</p>
         </div>
       </div>
       <div class="fact-row" style="margin-top:12px;">
@@ -1559,7 +1562,7 @@
           <div class="service-item" style="background:var(--muted-bg); padding:20px; border-radius:12px; border:1px solid var(--border);">
             <div style="font-size:24px; margin-bottom:12px;">💰</div>
             <h4 style="font-size:14px; margin-bottom:8px;">Funding Schemes</h4>
-            <p style="font-size:12px; color:var(--muted); line-height:1.5;">Guidance and connection to funding schemes such as CoeCI and NWO.</p>
+            <p style="font-size:12px; color:var(--muted); line-height:1.5;">Guidance and connection to funding schemes such as COECI and NWO.</p>
           </div>
 
           <div class="service-item" style="background:var(--muted-bg); padding:20px; border-radius:12px; border:1px solid var(--border);">
@@ -1589,7 +1592,7 @@
           <div class="service-item" style="background:var(--muted-bg); padding:20px; border-radius:12px; border:1px solid var(--border);">
             <div style="font-size:24px; margin-bottom:12px;">💻</div>
             <h4 style="font-size:14px; margin-bottom:8px;">Software Suite</h4>
-            <p style="font-size:12px; color:var(--muted); line-height:1.5;">Specialized software access, including No-Code platforms and Unreal Engine.</p>
+            <p style="font-size:12px; color:var(--muted); line-height:1.5;">Specialized software access, including No-Code platforms, Unity, and Unreal Engine.</p>
           </div>
 
         </div>
@@ -1841,7 +1844,7 @@
     <h2 class="section-title reveal">Partners &amp;<br /><span class="accent">Collaborators</span></h2>
     <div class="partners-grid">
 
-      <a class="partner-card reveal" href="https://www.amsterdamimmersivealliance.com" target="_blank">
+      <a class="partner-card reveal" href="https://amsterdamimmersivealliance.nl/" target="_blank">
         <div class="partner-logo">
           <img src="images/amsterdam-immersive-alliance.png" alt="Amsterdam Immersive Alliance" />
         </div>
@@ -1853,7 +1856,7 @@
         </div>
       </a>
 
-      <a class="partner-card reveal d2" href="https://www.anotherkindofblue.com" target="_blank">
+      <a class="partner-card reveal d2" href="https://anotherkindofblue.nl/en/" target="_blank">
         <div class="partner-logo">
           <img src="images/another-kind-of-blue.png" alt="Another Kind of Blue" />
         </div>
@@ -1919,7 +1922,7 @@
           <li>An Inholland student from any faculty or programme</li>
           <li>A Kies op Maat student from another Dutch university</li>
           <li>An international student from a partner university</li>
-          <li>In your 2nd year or beyond</li>
+          <li>In your 3rd year or beyond</li>
           <li>Able to commit to full-time study (30 EC)</li>
           <li>Comfortable studying in English</li>
         </ul>
@@ -2039,6 +2042,7 @@
       <div class="footer-socials">
         <a class="social-link" href="https://instagram.com/emergingtechminorinholland" target="_blank">Instagram</a>
         <a class="social-link" href="https://www.tiktok.com/@emergingtechminor" target="_blank">TikTok</a>
+        <a class="social-link" href="https://inholland.us19.list-manage.com/subscribe?u=00c36a4ae41435874c5c634c8&id=c02c09343e" target="_blank">Newsletter</a>
         <a class="social-link" href="mailto:emergingtechminor@inholland.nl">Email</a>
       </div>
     </div>
