@@ -990,6 +990,8 @@
       font-size: 22px; font-weight: 800; color: #fff;
       margin: 0 auto 18px; letter-spacing: -0.02em;
       object-fit: cover;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
     }
     .team-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
     .team-role { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; display: block; }
@@ -2113,48 +2115,71 @@ function drawFrame(progress) {
 // After extraction, scrolling is a pure synchronous canvas draw.
 
 const CAPTURE_FPS = 24;   // frames per second to capture
-const MAX_FRAMES  = 300;  // hard cap to keep memory reasonable
+const MAX_FRAMES  = 800;  // Increased cap for longer videos
 
-// Offscreen capture canvas — sized to video native resolution
+// Offscreen capture canvas — normalized to 1080p max to save memory
 const cap    = document.createElement('canvas');
-const capCtx = cap.getContext('2d');
+const capCtx = cap.getContext('2d', { alpha: false });
 
 function seekTo(time) {
-  return new Promise(resolve => {
-    const onSeeked = () => { video.removeEventListener('seeked', onSeeked); resolve(); };
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      video.removeEventListener('seeked', onSeeked);
+      reject(new Error('Seek timed out'));
+    }, 5000);
+    const onSeeked = () => { 
+      clearTimeout(timeout);
+      video.removeEventListener('seeked', onSeeked); 
+      resolve(); 
+    };
     video.addEventListener('seeked', onSeeked);
     video.currentTime = time;
   });
 }
 
 async function extractFrames() {
-  const duration   = video.duration;
-  const totalCount = Math.min(Math.ceil(duration * CAPTURE_FPS), MAX_FRAMES);
+  try {
+    const duration   = video.duration;
+    if (!duration || isNaN(duration)) throw new Error("Invalid video duration");
+    
+    const totalCount = Math.min(Math.ceil(duration * CAPTURE_FPS), MAX_FRAMES);
 
-  cap.width  = video.videoWidth  || 1280;
-  cap.height = video.videoHeight || 720;
+    // Normalize resolution to save memory (max 1080p height)
+    const scale = Math.min(1, 1080 / (video.videoHeight || 1080));
+    cap.width  = (video.videoWidth  || 1280) * scale;
+    cap.height = (video.videoHeight || 720) * scale;
 
-  // Show progress bar
-  loaderBarWrap.style.display = 'block';
+    // Show progress bar
+    loaderBarWrap.style.display = 'block';
 
-  for (let i = 0; i < totalCount; i++) {
-    const t = (i / (totalCount - 1)) * duration;
-    await seekTo(t);
+    for (let i = 0; i < totalCount; i++) {
+      const t = (i / (totalCount - 1)) * duration;
+      await seekTo(Math.min(t, duration - 0.01));
 
-    capCtx.drawImage(video, 0, 0, cap.width, cap.height);
-    const bmp = await createImageBitmap(cap);
-    frames.push(bmp);
+      capCtx.drawImage(video, 0, 0, cap.width, cap.height);
+      const bmp = await createImageBitmap(cap);
+      frames.push(bmp);
 
-    // Update progress UI
-    const pct = Math.round((i + 1) / totalCount * 100);
-    loaderBar.style.width = pct + '%';
-    loaderText.textContent = `Preparing experience… ${pct}%`;
+      // Update progress UI
+      const pct = Math.round((i + 1) / totalCount * 100);
+      loaderBar.style.width = pct + '%';
+      loaderText.textContent = `Preparing experience… ${pct}%`;
+    }
+
+    framesReady = true;
+    drawFrame(0);
+    canvas.classList.add('ready');
+    
+    // Smooth transition out
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 3000);
+  } catch (err) {
+    console.error("Extraction failed:", err);
+    // Fallback: hide loader anyway so site is usable
+    loader.classList.add('hidden');
+    canvas.classList.add('ready');
   }
-
-  framesReady = true;
-  drawFrame(0);
-  canvas.classList.add('ready');
-  loader.classList.add('hidden');
 }
 
 // ── KICK OFF EXTRACTION ONCE VIDEO IS READY ───────────────────
